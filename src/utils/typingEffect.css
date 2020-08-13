@@ -26,7 +26,7 @@ body {
 }
 .container-typing p span.typed-text {
   font-weight: normal;
-  color: #dd7732;
+  color: #ddc932;
 }
 .container-typing p span.cursor {
   display: inline-block;
