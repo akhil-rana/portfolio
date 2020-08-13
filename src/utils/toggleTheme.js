@@ -30,16 +30,6 @@ toNightAnimation
     },
     0
   )
-  //   .to(
-  //     '.day-label',
-  //     { duration: duration * 2, ease: 'power2.inOut', opacity: 0.2 },
-  //     0
-  //   )
-  //   .to(
-  //     '.night-label-theme-toggle',
-  //     { duration: duration * 2, ease: 'power2.inOut', opacity: 1 },
-  //     0
-  //   )
   .set(
     '#circle',
     {
@@ -68,7 +58,7 @@ toNightAnimation
   )
   .to(
     'body',
-    { backgroundColor: '#b0b0b9', color: 'black', duration: duration * 2 },
+    { duration: duration * 2 },
     0
   );
 
@@ -97,20 +87,19 @@ let toggle = () => {
   }
 };
 
-
 toNightAnimation.reverse();
 toNightAnimation.pause();
 
 $(document).ready(() => {
-  $('#input-theme-toggle').click().change(() => {
-    if (theme == 'light') {
-      theme = 'dark';
-      $('#themeCSS').attr('href', './utils/background.css');
-    } else {
-      theme = 'light';
-      $('#themeCSS').attr('href', './utils/background-light.css');
-    }
-  });
+  $('#input-theme-toggle')
+    .click()
+    .change(() => {
+      if (theme == 'light') {
+        theme = 'dark';
+        $('#themeCSS').attr('href', './utils/background.css');
+      } else {
+        theme = 'light';
+        $('#themeCSS').attr('href', './utils/background-light.css');
+      }
+    });
 });
-
-
