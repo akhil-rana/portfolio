@@ -11,6 +11,7 @@ body {
   color: #eee;
 }
 .container-typing {
+  cursor: default;
   height: 100vh;
   display: flex;
   justify-content: center;
