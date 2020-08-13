@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css?family=Lora&display=swap');
+
+/* body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Lora', serif;
+  color: #303030;
+} */
+
+/* .night-label-theme-toggle {
+  opacity: 0.2;
+} */
+
+/* body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fef9ea;
+} */
+
+.layout-theme-toggle {
+  width: 70vw;
+  max-width: 300px;
+  min-width: 250px;
+  height: 30vh;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  font-size: 25px;
+}
+
+.layout-theme-toggle:nth-child(1) {
+  text-align: right;
+}
+
+#toggle-theme-svg {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+#night-content-theme-toggle {
+  opacity: 0.5;
+}
+
+.inner-shadow-theme-toggle {
+  stroke-opacity: 0.1;
+  stroke-width: 5;
+  stroke: black;
+  fill: none;
+}
+
+.container-theme-toggle input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.container-theme-toggle {
+  margin-top: -6.5em;
+}
+
+#themeToggle {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  height: 2.5em;
+  width: 4em;
+}
