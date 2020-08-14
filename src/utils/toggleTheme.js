@@ -135,5 +135,4 @@ function setDarkTheme() {
   $('#themeCSS').attr('href', './utils/background.css');
   $('#toggle-theme-svg').css('filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
   $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
-
 }
