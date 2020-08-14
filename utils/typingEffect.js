@@ -2,12 +2,12 @@ const typedTextSpan = document.querySelector('.typed-text');
 const cursorSpan = document.querySelector('.cursor');
 
 const textArray = ['Akhil', 'a software engineer', 'a maker', 'into web development'];
-const typingDelay = 150;
-const erasingDelay = 100;
-const newTextDelay = 1500; // Delay between current and next text
+const typingDelay = 75;
+const erasingDelay = 50;
+const newTextDelay = 1000; // Delay between current and next text
 let textArrayIndex = 0;
 let charIndex = 0;
-
+ 
 function type() {
   if (charIndex < textArray[textArrayIndex].length) {
     if (!cursorSpan.classList.contains('typing'))

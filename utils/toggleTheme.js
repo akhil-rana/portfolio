@@ -1,15 +1,15 @@
-let duration = 0.4;
+const duration = 0.4;
 let isDay = true;
 
-let back = document.getElementById('back-theme-toggle');
-let front = document.getElementById('front-theme-toggle');
+const back = document.getElementById('back-theme-toggle');
+const front = document.getElementById('front-theme-toggle');
 
-let switchTime = () => {
-  back.setAttribute('href', '#' + (isDay ? 'day' : 'night'));
-  front.setAttribute('href', '#' + (isDay ? 'night' : 'day'));
+const switchTime = () => {
+  back.setAttribute('href', `#${isDay ? 'day' : 'night'}`);
+  front.setAttribute('href', `#${isDay ? 'night' : 'day'}`);
 };
-let scale = 30;
-let toNightAnimation = gsap.timeline();
+const scale = 30;
+const toNightAnimation = gsap.timeline();
 
 toNightAnimation
   .to('#night-content-theme-toggle', {
@@ -21,7 +21,7 @@ toNightAnimation
   .to(
     '#circle',
     {
-      duration: duration,
+      duration,
       ease: 'power4.in',
       scaleX: scale,
       scaleY: scale,
@@ -43,7 +43,7 @@ toNightAnimation
   .to(
     '#circle',
     {
-      duration: duration,
+      duration,
       ease: 'power4.out',
       scaleX: -1,
       scaleY: 1,
@@ -56,13 +56,9 @@ toNightAnimation
     { duration: duration * 0.5, opacity: 0.5 },
     duration * 1.5
   )
-  .to(
-    'body',
-    { duration: duration * 2 },
-    0
-  );
+  .to('body', { duration: duration * 2 }, 0);
 
-let stars = Array.from(document.getElementsByClassName('star'));
+const stars = Array.from(document.getElementsByClassName('star'));
 stars.map((star) =>
   gsap.to(star, {
     duration: 'random(0.4, 1.5)',
@@ -71,11 +67,26 @@ stars.map((star) =>
     opacity: 'random(0.2, 0.5)',
   })
 );
-gsap.to('.clouds-big', { duration: 15, repeat: -1, x: -74, ease: 'linear' });
-gsap.to('.clouds-medium', { duration: 20, repeat: -1, x: -65, ease: 'linear' });
-gsap.to('.clouds-small', { duration: 25, repeat: -1, x: -71, ease: 'linear' });
+gsap.to('.clouds-big', {
+  duration: 15,
+  repeat: -1,
+  x: -74,
+  ease: 'linear',
+});
+gsap.to('.clouds-medium', {
+  duration: 20,
+  repeat: -1,
+  x: -65,
+  ease: 'linear',
+});
+gsap.to('.clouds-small', {
+  duration: 25,
+  repeat: -1,
+  x: -71,
+  ease: 'linear',
+});
 
-let switchToggle = document.getElementById('input-theme-toggle');
+const switchToggle = document.getElementById('input-theme-toggle');
 switchToggle.addEventListener('change', () => toggle());
 
 let toggle = () => {
@@ -91,15 +102,27 @@ toNightAnimation.reverse();
 toNightAnimation.pause();
 
 $(document).ready(() => {
-  $('#input-theme-toggle')
-    .click()
-    .change(() => {
-      if (theme == 'light') {
-        theme = 'dark';
+  if (localStorage.getItem('theme') == 'light') {
+    $('#themeCSS').attr('href', './utils/background-light.css');
+    $('#input-theme-toggle').change(() => {
+      if (localStorage.getItem('theme') == 'light') {
+        localStorage.setItem('theme', 'dark');
         $('#themeCSS').attr('href', './utils/background.css');
       } else {
-        theme = 'light';
+        localStorage.setItem('theme', 'light');
         $('#themeCSS').attr('href', './utils/background-light.css');
       }
     });
+  } else {
+    localStorage.setItem('theme', 'dark');
+    $('#input-theme-toggle').click().change(() => {
+      if (localStorage.getItem('theme') == 'light') {
+        localStorage.setItem('theme', 'dark');
+        $('#themeCSS').attr('href', './utils/background.css');
+      } else {
+        localStorage.setItem('theme', 'light');
+        $('#themeCSS').attr('href', './utils/background-light.css');
+      }
+    });
+  }
 });
