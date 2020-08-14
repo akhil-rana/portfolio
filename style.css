@@ -1,3 +1,34 @@
 #content {
-    height: 100%;
+  height: 100%;
+}
+
+#nextDownArrow {
+  position: absolute;
+  bottom: 0.8em;
+  text-align: center;
+  width: 100%;
+  font-size: 4em;
+  color: white;
+  -webkit-animation: action 1s ease infinite alternate;
+  animation: action 1s ease infinite alternate;
+}
+@-webkit-keyframes action {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0.5em);
+  }
+}
+@keyframes action {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0.5em);
+  }
+}
+
+#nextDownArrow i {
+  cursor: pointer;
 }
