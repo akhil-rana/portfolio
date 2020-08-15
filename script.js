@@ -1,6 +1,13 @@
 let position = 'main';
+let navBarExpanded = false;
 
-$('#nextDownArrow i').click(() => {
+$(window).resize(() => {
+  let deviceWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;
+  if (deviceWidth <= 700) $('#navBar li').hide();
+  else $('#navBar li').css('transform', 'scale(1)').fadeIn();
+});
+
+$('#nextDownArrow svg').click(() => {
   goDownArrow();
 });
 
@@ -15,6 +22,8 @@ document.querySelector('body').onwheel = function (event) {
 
 function goDownArrow() {
   position = 'about';
+  let deviceWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;
+  if (deviceWidth <= 700) $('#navBar li').hide();
   $('#nextDownArrow').fadeOut();
   anime({
     targets: '.container-typing',
@@ -24,7 +33,7 @@ function goDownArrow() {
     complete: function () {
       $('.container-typing').hide();
       $('#navBar').fadeIn();
-      $('#navBar li').show();
+      if (deviceWidth > 700) $('#navBar li').show();
       anime({
         targets: '#navBar li',
         scale: '1.3',
@@ -53,3 +62,17 @@ function goUpArrow() {
   });
   $('body').css('overscroll-behavior', 'auto');
 }
+
+$('#navBar #menuButton svg').click(() => {
+  if (!navBarExpanded) {
+    $('#navBar').animate({ height: '20em' }, 200, () => {
+      navBarExpanded = true;
+      $('#navBar li').fadeIn();
+    });
+  } else {
+    $('#navBar li').hide();
+    $('#navBar').animate({ height: '4em' }, 200, () => {
+      navBarExpanded = false;
+    });
+  }
+});
