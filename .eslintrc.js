@@ -20,6 +20,7 @@ module.exports = {
     "indent": ["error", 2]
   },
   "globals": {
-    "gsap": true
+    "gsap": true,
+    "anime": true
   }
 };
