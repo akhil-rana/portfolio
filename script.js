@@ -28,7 +28,7 @@ function goDownArrow() {
   anime({
     targets: '.container-typing',
     translateY: '-100%',
-    duration: 200,
+    duration: 400,
     easing: 'easeInOutQuad',
     complete: function () {
       $('.container-typing').hide();
