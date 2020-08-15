@@ -31,9 +31,10 @@ function goDownArrow() {
         duration: 200,
         direction: 'alternate',
         easing: 'easeInOutSine',
-        complete: function() {
+        complete: function () {
           $('#about').addClass('hover');
-        }
+          $('body').css('overscroll-behavior', 'auto');
+        },
       });
     },
   });
@@ -50,4 +51,5 @@ function goUpArrow() {
     translateY: '0%',
     duration: 1100,
   });
+  $('body').css('overscroll-behavior', 'auto');
 }
