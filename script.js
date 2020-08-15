@@ -21,7 +21,7 @@ function goDownArrow() {
     translateY: '-100%',
     duration: 500,
     easing: 'easeInOutQuad',
-    complete: function (anim) {
+    complete: function () {
       $('.container-typing').hide();
       $('#navBar').fadeIn();
       $('#navBar li').show();
@@ -48,7 +48,6 @@ function goUpArrow() {
   anime({
     targets: '.container-typing',
     translateY: '0%',
-    duration: 500,
-    easing: 'easeInOutQuad',
+    duration: 1100,
   });
 }
