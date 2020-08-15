@@ -33,7 +33,7 @@ function goDownArrow() {
         easing: 'easeInOutSine',
         complete: function () {
           $('#about').addClass('hover');
-          $('body').css('overscroll-behavior', 'auto');
+          $('body').css('overscroll-behavior', 'none');
         },
       });
     },
