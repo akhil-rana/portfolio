@@ -36,7 +36,7 @@ function handleTouchMove(evt) {
     if ( yDiff > 0 ) {
       /* up swipe */ 
       if (position == 'main') {
-        goUpArrow();
+        goDownArrow();
       }
     } else { 
       /* down swipe */
