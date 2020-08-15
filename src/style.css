@@ -36,8 +36,10 @@ body {
   }
 }
 
-#nextDownArrow i {
+#nextDownArrow svg {
   cursor: pointer;
+  width: 1.3em;
+  height: auto;
 }
 
 #navBar {
@@ -56,8 +58,6 @@ body {
   display: flex;
 }
 #navBar ul li span {
-  display: inline-block;
-  /* height: 100%; */
   margin: 1em;
   position: relative;
   color: white;
@@ -81,16 +81,18 @@ body {
   transform: scaleX(0);
   transform-origin: right;
 }
-#navBar ul li span:hover,#navBar ul li span.hover {
+#navBar ul li span:hover,
+#navBar ul li span.hover {
   /* transform: scale(); */
   color: rgba(221, 221, 221, 0.822);
 }
-#navBar ul li span:hover::after, #navBar ul li span.hover::after {
+#navBar ul li span:hover::after,
+#navBar ul li span.hover::after {
   transform: scaleX(1);
   transform-origin: left;
   background: rgba(218, 214, 214, 0.7);
 }
-#navBar ul li{
+#navBar ul li {
   transform: scale(0.25);
 }
 /* #nextDownArrow,
@@ -98,4 +100,28 @@ body {
 #navBar,
 #navBar ul li {
   display: none;
+}
+
+#menuButton {
+  display: none;
+}
+
+#menuButton svg {
+  width: 2.2em;
+  height: auto;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+  #navBar ul {
+    display: block;
+  }
+  #navBar ul li {
+    padding: 1em;
+  }
+  #menuButton {
+    display: block;
+    margin: 1em 1em 1em 2em;
+    color: white;
+  }
 }

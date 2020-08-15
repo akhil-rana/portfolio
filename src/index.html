@@ -19,6 +19,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   </head>
   <body>
     <div id="main">
@@ -33,11 +34,22 @@
           </p>
         </div>
         <nav id="navBar">
+          <span id="menuButton">
+            <i data-feather="menu"></i>
+          </span>
           <ul>
-            <li><span id="about"><b>About</b></span></li>
-            <li><span id="projects"><b>Projects</b></span></li>
-            <li><span id="experience"><b>Experience</b></span></li>
-            <li><span id="contact"><b>Contact</b></span></li>
+            <li>
+              <span id="about"><b>About</b></span>
+            </li>
+            <li>
+              <span id="projects"><b>Projects</b></span>
+            </li>
+            <li>
+              <span id="experience"><b>Experience</b></span>
+            </li>
+            <li>
+              <span id="contact"><b>Contact</b></span>
+            </li>
           </ul>
         </nav>
         <span id="themeToggle">
@@ -56,9 +68,12 @@
           </div>
         </span>
         <div id="nextDownArrow">
-          <i class="fas fa-chevron-down"></i>
+          <i data-feather="chevron-down"></i>
         </div>
       </div>
+      <script>
+        feather.replace();
+      </script>
       <script src="./script.js"></script>
       <script src="./utils/toggleTheme.js"></script>
       <script src="./utils/typingEffect.js"></script>
