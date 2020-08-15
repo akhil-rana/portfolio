@@ -77,11 +77,11 @@
   transform: scaleX(0);
   transform-origin: right;
 }
-#navBar ul li span:hover {
+#navBar ul li span:hover,#navBar ul li span.hover {
   /* transform: scale(); */
-  font-size: 1.44em;
+  color: rgba(221, 221, 221, 0.822);
 }
-#navBar ul li span:hover::after {
+#navBar ul li span:hover::after, #navBar ul li span.hover::after {
   transform: scaleX(1);
   transform-origin: left;
   background: rgba(218, 214, 214, 0.7);
