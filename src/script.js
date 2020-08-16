@@ -1,6 +1,10 @@
 let position = 'main';
 let navBarExpanded = false;
 
+$(document).ready(() => {
+  $('#profileImage img').addClass('hover');
+});
+
 $(window).resize(() => {
   let deviceWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;
   if (deviceWidth <= 700) {
@@ -35,11 +39,10 @@ function goDownArrow() {
   if (deviceWidth <= 700) $('#navBar li').hide();
   $('#nextDownArrow').fadeOut();
   $('.about').css('display', 'flex');
-
   anime({
     targets: '.container-typing',
     translateY: '-100%',
-    duration: 450,
+    duration: 500,
     easing: 'easeInOutQuad',
     complete: function () {
       $('#navBar').fadeIn();
@@ -55,6 +58,7 @@ function goDownArrow() {
           $('body').css('overscroll-behavior', 'none');
           // $('.container-typing').hide();
           position = 'about';
+          $('#profileImage img').removeClass('hover');
         },
       });
     },
@@ -81,6 +85,7 @@ function goUpArrow() {
     complete: function () {
       $('#nextDownArrow').fadeIn();
       position = 'main';
+      $('#profileImage img').addClass('hover');
     },
   });
   anime({
