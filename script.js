@@ -77,6 +77,7 @@ function goUpArrow() {
   $('#navBar').fadeOut();
   $('.container-typing').show();
   $('#about').removeClass('hover');
+  $('#navBar #menuButton #menuIconSpan').click();
   anime({
     targets: '.about',
     translateY: '100%',
