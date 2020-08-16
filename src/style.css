@@ -148,7 +148,7 @@ body {
 .about #aboutBox {
   width: 25em;
   min-width: 12em;
-  height: 30em;
+  min-height: 30em;
   justify-content: center;
   border: 2px solid rgba(255, 255, 255, 0.555);
   border-radius: 10px;

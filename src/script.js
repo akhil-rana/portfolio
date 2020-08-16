@@ -39,7 +39,7 @@ function goDownArrow() {
   anime({
     targets: '.container-typing',
     translateY: '-100%',
-    duration: 400,
+    duration: 450,
     easing: 'easeInOutQuad',
     complete: function () {
       $('#navBar').fadeIn();
