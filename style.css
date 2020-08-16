@@ -2,7 +2,7 @@ body {
   /* overscroll-behavior: none; */
   font-family: 'Montserrat', sans-serif;
   user-select: none; /* supported by Chrome and Opera */
-   -webkit-user-select: none; /* Safari */
+  -webkit-user-select: none; /* Safari */
 }
 
 #content {
@@ -246,7 +246,7 @@ body {
 }
 
 @-moz-document url-prefix() {
-  .container-theme-toggle{
-    margin-top: -6em;
+  .container-theme-toggle {
+    top: 0;
   }
 }
