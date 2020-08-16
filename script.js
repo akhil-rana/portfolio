@@ -62,8 +62,8 @@ function goDownArrow() {
   anime({
     targets: '.about',
     translateY: '-100%',
-    duration: 1300,
-    // easing: 'easeInOutSine',
+    duration: 700,
+    easing: 'easeOutElastic(1, 0.8)',
     complete: function () {},
   });
 }
