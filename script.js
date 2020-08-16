@@ -24,14 +24,19 @@ $('#nextDownArrow svg').click(() => {
   goDownArrow();
 });
 
-document.querySelector('body').onwheel = function (event) {
-  let move = event.deltaY;
-  if (move > 0) {
+document.querySelector('body').onwheel = movePage;
+document.onkeydown = movePage;
+
+function movePage(event) {
+  let move = event.deltaY || null;
+  let keyPressed = event.keyCode || null;
+  if (move > 0 || keyPressed === 40) {
     if (position == 'main') goDownArrow();
-  } else if (move < 0) {
+  } else if (move < 0 || keyPressed === 38) {
     if (position == 'about') goUpArrow();
   }
-};
+  move = keyPressed = null;
+}
 
 function goDownArrow() {
   position = 'processing';
