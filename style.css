@@ -1,6 +1,8 @@
 body {
   /* overscroll-behavior: none; */
   font-family: 'Montserrat', sans-serif;
+  user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
 }
 
 #content {
@@ -240,5 +242,11 @@ body {
   }
   #pictureBox {
     width: 30em;
+  }
+}
+
+@-moz-document url-prefix() {
+  .container-theme-toggle{
+    margin-top: -6em;
   }
 }
