@@ -37,16 +37,15 @@ function goDownArrow() {
   position = 'processing';
   let deviceWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;
   if (deviceWidth <= 700) $('#navBar li').hide();
+  if (deviceWidth > 700) $('#navBar li').show();
   $('#nextDownArrow').fadeOut();
   $('.about').css('display', 'flex');
   anime({
     targets: '.container-typing',
     translateY: '-100%',
-    duration: 500,
+    duration: 400,
     easing: 'easeInOutQuad',
     complete: function () {
-      $('#navBar').fadeIn();
-      if (deviceWidth > 700) $('#navBar li').show();
       anime({
         targets: '#navBar li',
         scale: '1.3',
@@ -59,6 +58,7 @@ function goDownArrow() {
           // $('.container-typing').hide();
           position = 'about';
           $('#profileImage img').removeClass('hover');
+          $('#navBar').fadeIn();
         },
       });
     },
@@ -66,8 +66,8 @@ function goDownArrow() {
   anime({
     targets: '.about',
     translateY: '-100%',
-    duration: 700,
-    easing: 'easeOutElastic(1, 0.8)',
+    duration: 1000,
+    easing: 'easeOutElastic(1, 0.6)',
     complete: function () {},
   });
 }
@@ -96,16 +96,37 @@ function goUpArrow() {
   $('body').css('overscroll-behavior', 'auto');
 }
 
-$('#navBar #menuButton svg').click(() => {
+$('#navBar #menuButton #menuIconSpan').click(() => {
   if (!navBarExpanded) {
     $('#navBar').animate({ height: '20em' }, 300, () => {
       navBarExpanded = true;
       $('#navBar li').fadeIn();
     });
+    $('#navBar').css('backdrop-filter', 'blur(8px)');
+    $('#navBar').css('-webkit-backdrop-filter', 'blur(8px)');
+    $('#menuButton svg.feather.feather-menu').replaceWith(
+      feather.icons.x.toSvg()
+    );
+    anime({
+      targets: '#menuButton #menuIconSpan svg',
+      rotate: '90deg',
+      duration: 700,
+    });
   } else {
     $('#navBar li').hide();
     $('#navBar').animate({ height: '4em' }, 300, () => {
       navBarExpanded = false;
+      $('#navBar').css('backdrop-filter', 'blur(3px)');
+      $('#navBar').css('-webkit-backdrop-filter', 'blur(3px)');
+    });
+    $('#menuButton svg.feather.feather-x').replaceWith(
+      feather.icons.menu.toSvg()
+    );
+    $('#menuButton #menuIconSpan svg').css('transform', 'rotate(90deg)');
+    anime({
+      targets: '#menuButton #menuIconSpan svg',
+      rotate: '0deg',
+      duration: 700,
     });
   }
 });

@@ -110,7 +110,12 @@ body {
   width: 2.2em;
   height: auto;
   cursor: pointer;
-  margin: 0em 1em -0.4em 0em;
+  margin: 0em 1em 0em 0em;
+  /* transition: ease 0.5s; */
+}
+
+#menuButton svg:hover {
+  /* transform: rotate(90deg); */
 }
 
 #profileImage {
@@ -197,7 +202,7 @@ body {
     padding: 1em;
   }
   #menuButton {
-    display: block;
+    display: flex;
     margin: 1em 1em 1em 2em;
     color: white;
   }
