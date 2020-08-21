@@ -273,6 +273,14 @@ let projectsDeployLinks = [ '',
 ];
 
 $('#nextProject svg').click(() => {
+  if (currentProject < projectNames.length + 1) goToNextProject();
+});
+$('#previousProject svg').click(() => {
+  if (currentProject > 1) goToPreviousProject();
+});
+
+function goToNextProject(){
+  $('#nextProject svg, #previousProject svg').unbind('click');
   if (currentProject == 1) {
     $('#nextProject').fadeOut(function () {
       $(this).fadeIn();
@@ -282,14 +290,6 @@ $('#nextProject svg').click(() => {
       $(this).css('opacity', '1');
     });
   }
-  if (currentProject < projectNames.length + 1) goToNextProject();
-});
-$('#previousProject svg').click(() => {
-  if (currentProject > 1) goToPreviousProject();
-});
-
-function goToNextProject(){
-  $('#nextProject svg, #previousProject svg').unbind('click');
   if (currentProject == projectNames.length) {
     $('#projectName').fadeOut(function () {
       $(this).text('You might find some more on my github account :)').fadeIn();
@@ -318,13 +318,6 @@ function goToNextProject(){
       $('#projectGithub').attr('href', projectsGithubLinks[currentProject]);
       currentProject++;
       $('#nextProject svg').click(() => {
-        $('#nextProject').fadeOut(function () {
-          $(this).fadeIn();
-          $(this).css('opacity', '0');
-          nextProjectArrowAnimation.seek(0);
-          anime.remove('#nextProject');
-          $(this).css('opacity', '1');
-        });
         if (currentProject < projectNames.length + 1) goToNextProject();
       });
       $('#previousProject svg').click(() => {
@@ -353,13 +346,6 @@ function goToPreviousProject() {
         if (currentProject > 1) goToPreviousProject();
       });
       $('#nextProject svg').click(() => {
-        $('#nextProject').fadeOut(function () {
-          $(this).fadeIn();
-          $(this).css('opacity', '0');
-          nextProjectArrowAnimation.seek(0);
-          anime.remove('#nextProject');
-          $(this).css('opacity', '1');
-        });
         if (currentProject < projectNames.length + 1) goToNextProject();
       });
     });
