@@ -210,59 +210,6 @@ body {
   cursor: default;
 }
 
-@media only screen and (max-width: 700px) {
-  #navBar ul {
-    display: block;
-  }
-  #navBar ul li {
-    padding: 1em;
-  }
-  #menuButton {
-    display: flex;
-    margin: 1em 1em 1em 2em;
-    color: white;
-  }
-}
-
-@media only screen and (max-width: 358px), (max-height: 630px) {
-  #profileDescription {
-    font-size: small;
-  }
-}
-@media only screen and (max-width: 358px), (max-height: 630px) {
-  #profileDescription {
-    font-size: small;
-  }
-}
-
-@media only screen and (max-height: 510px) {
-  #profileImage img {
-    width: 5em;
-    height: 5em;
-  }
-  #profileImage {
-    width: 5em;
-    height: 5em;
-  }
-  .about #name {
-    font-size: medium;
-  }
-  .about #location {
-    font-size: small;
-  }
-  #aboutBox {
-    max-width: 95%;
-    display: flex;
-  }
-  #pictureBox {
-    width: 30em;
-  }
-  #projectsBox {
-    max-width: 95%;
-    display: flex;
-  }
-}
-
 .projects {
   height: calc(100% - 6em);
   display: flex;
@@ -349,6 +296,92 @@ body {
 
 #projectsBox * {
   color: white;
+}
+
+@media only screen and (max-width: 700px) {
+  #navBar ul {
+    display: block;
+  }
+  #navBar ul li {
+    padding: 1em;
+  }
+  #menuButton {
+    display: flex;
+    margin: 1em 1em 1em 2em;
+    color: white;
+  }
+}
+
+@media only screen and (max-width: 358px), (max-height: 630px) {
+  #profileDescription {
+    font-size: small;
+  }
+}
+@media only screen and (max-width: 358px), (max-height: 630px) {
+  #profileDescription {
+    font-size: small;
+  }
+}
+
+@media only screen and (max-height: 510px) {
+  #profileImage img {
+    width: 5em;
+    height: 5em;
+  }
+  #profileImage {
+    width: 5em;
+    height: 5em;
+  }
+  .about #name {
+    font-size: medium;
+  }
+  .about #location {
+    font-size: small;
+  }
+  #aboutBox {
+    max-width: 95%;
+    display: flex;
+  }
+  #pictureBox {
+    width: 30em;
+  }
+  #projectsBox {
+    max-width: 95%;
+    display: flex;
+  }
+  #projectDescription {
+    font-size: 0.87em;
+  }
+  #projectName {
+    font-size: 0.87em;
+  }
+  #projectsBoxHeading {
+    font-size: 1.3em;
+  }
+  #projectsNavigation svg {
+    width: 1.5em;
+  }
+  #projectLinks i {
+    font-size: 0.85em;
+  }
+}
+
+@media only screen and (max-height: 370px) {
+  #projectDescription {
+    font-size: 0.65em;
+  }
+  #projectName {
+    font-size: 0.8em;
+  }
+  #projectsBoxHeading {
+    font-size: 1.2em;
+  }
+  #projectsNavigation svg {
+    width: 1.3em;
+  }
+  #projectLinks i {
+    font-size: 0.7em;
+  }
 }
 
 @-moz-document url-prefix() {
