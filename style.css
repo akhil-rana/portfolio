@@ -145,6 +145,20 @@ body {
   opacity: 1;
 }
 
+#profileDescription {
+  color: white;
+  margin: 1em;
+  text-align: justify;
+  line-height: 1.5;
+}
+
+#location {
+  color: white;
+  cursor: default;
+  text-align: center;
+  margin-top: -0.9em;
+}
+
 .about {
   height: calc(100% - 6em);
   display: flex;
@@ -152,7 +166,7 @@ body {
   align-items: center;
   /* margin-bottom: 1em; */
   padding: 1em;
-  transform: translateY(100%);
+  /* transform: translateY(100%); */
   /* overflow-x: auto;
   overflow-y: visible; */
 }
@@ -243,6 +257,98 @@ body {
   #pictureBox {
     width: 30em;
   }
+  #projectsBox {
+    max-width: 95%;
+    display: flex;
+  }
+}
+
+.projects {
+  height: calc(100% - 6em);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-bottom: 1em; */
+  padding: 1em;
+  /* transform: translateY(200%); */
+  /* overflow-x: auto;
+  overflow-y: visible; */
+}
+
+.projects #projectsBox {
+  width: 25em;
+  min-width: 18.5em;
+  /* min-height: 30em; */
+  max-height: 97%;
+  /* margin-top: 4em; */
+  /* justify-content: center; */
+  border: 2px solid rgba(255, 255, 255, 0.555);
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+#projectsBoxHeading {
+  padding: 0.8em;
+  color: white;
+  font-size: 1.7em;
+  text-align: center;
+}
+
+#projectsList {
+  text-align: center;
+}
+
+#project {
+  margin: 0.8em;
+}
+
+#projectName {
+  font-size: 1.3em;
+}
+
+#projectDescription {
+  text-align: justify;
+  line-height: 1.5;
+}
+
+#projectLinks {
+  margin: 0.2em;
+  font-size: 2em;
+}
+
+#projectsNavigation {
+  margin-top: -1em;
+  height: 3.5em;
+}
+
+#previousProject {
+  position: absolute;
+  left: 1em;
+  display: none;
+}
+#nextProject {
+  position: absolute;
+  right: 1em;
+}
+
+#previousProject svg,
+#nextProject svg {
+  margin: 0.3em 0em 1em 0em;
+  width: 2em;
+  height: auto;
+  cursor: pointer;
+}
+
+#projectLinks i {
+  margin: 0.3em 0.5em 0em 0.5em;
+  cursor: pointer;
+}
+
+#projectsBox * {
+  color: white;
 }
 
 @-moz-document url-prefix() {
