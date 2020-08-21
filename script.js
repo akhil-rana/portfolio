@@ -131,6 +131,7 @@ function goUpArrow() {
   $('body').css('overscroll-behavior', 'auto');
 }
 
+let nextProjectArrowAnimation = null;
 function goDownFromAbout() {
   position = 'processing';
   $('#currentPosition').fadeOut(function () {
@@ -153,6 +154,17 @@ function goDownFromAbout() {
     easing: 'easeOutElastic(1, 0.6)',
     complete: function () {
       position = 'projects';
+      nextProjectArrowAnimation = anime({
+        targets: '#nextProject',
+        translateX: '0.7em',
+        duration: 800,
+        direction: 'alternate',
+        loop: true,
+        easing: 'easeInOutSine',
+        complete: function () {
+          position = 'projects';
+        },
+      });
     },
   });
   $('nav li span').removeClass('hover');
@@ -262,6 +274,15 @@ let projectsDeployLinks = [ '',
 ];
 
 $('#nextProject svg').click(() => {
+  if (currentProject == 1) {
+    $('#nextProject').fadeOut(function () {
+      $(this).fadeIn();
+      $(this).css('opacity', '0');
+      nextProjectArrowAnimation.seek(0);
+      anime.remove('#nextProject');
+      $(this).css('opacity', '1');
+    });
+  }
   if (currentProject < projectNames.length + 1) goToNextProject();
 });
 $('#previousProject svg').click(() => {
