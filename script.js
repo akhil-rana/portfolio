@@ -154,17 +154,16 @@ function goDownFromAbout() {
     easing: 'easeOutElastic(1, 0.6)',
     complete: function () {
       position = 'projects';
-      nextProjectArrowAnimation = anime({
-        targets: '#nextProject',
-        translateX: '0.7em',
-        duration: 800,
-        direction: 'alternate',
-        loop: true,
-        easing: 'easeInOutSine',
-        complete: function () {
-          position = 'projects';
-        },
-      });
+      if (currentProject == 1) {
+        nextProjectArrowAnimation = anime({
+          targets: '#nextProject',
+          translateX: '0.7em',
+          duration: 800,
+          direction: 'alternate',
+          loop: true,
+          easing: 'easeInOutSine',
+        });
+      }
     },
   });
   $('nav li span').removeClass('hover');
@@ -319,6 +318,13 @@ function goToNextProject(){
       $('#projectGithub').attr('href', projectsGithubLinks[currentProject]);
       currentProject++;
       $('#nextProject svg').click(() => {
+        $('#nextProject').fadeOut(function () {
+          $(this).fadeIn();
+          $(this).css('opacity', '0');
+          nextProjectArrowAnimation.seek(0);
+          anime.remove('#nextProject');
+          $(this).css('opacity', '1');
+        });
         if (currentProject < projectNames.length + 1) goToNextProject();
       });
       $('#previousProject svg').click(() => {
@@ -347,6 +353,13 @@ function goToPreviousProject() {
         if (currentProject > 1) goToPreviousProject();
       });
       $('#nextProject svg').click(() => {
+        $('#nextProject').fadeOut(function () {
+          $(this).fadeIn();
+          $(this).css('opacity', '0');
+          nextProjectArrowAnimation.seek(0);
+          anime.remove('#nextProject');
+          $(this).css('opacity', '1');
+        });
         if (currentProject < projectNames.length + 1) goToNextProject();
       });
     });
