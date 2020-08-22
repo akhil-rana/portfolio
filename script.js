@@ -271,7 +271,6 @@ function goUpFromExperience() {
     duration: 400,
     easing: 'easeInOutQuad',
     complete: function () {
-      $('#profileImage img').removeClass('hover');
     },
   });
   anime({
