@@ -28,6 +28,9 @@ $('#projects').click(() => {
   if (position == 'about') {
     goDownFromAbout();
   }
+  if (position == 'experience') {
+    goUpFromExperience();
+  }
   if (navBarExpanded) {
     setTimeout(() => {
       $('#navBar #menuButton #menuIconSpan').click();
@@ -38,6 +41,23 @@ $('#projects').click(() => {
 $('#about').click(() => {
   if (position == 'projects') {
     goUpFromProjects();
+  }
+  if (position == 'experience') {
+    fromExperienceToAbout();
+  }
+  if (navBarExpanded) {
+    setTimeout(() => {
+      $('#navBar #menuButton #menuIconSpan').click();
+    }, 400);
+  }
+});
+
+$('#experience').click(() => {
+  if (position == 'projects') {
+    goDownFromProjects();
+  }
+  if (position == 'about') {
+    fromAboutToExperience();
   }
   if (navBarExpanded) {
     setTimeout(() => {
@@ -55,13 +75,17 @@ function movePage(event) {
   if (move > 0 || keyPressed === 40) {
     if (position == 'main') goDownArrow();
     if (position == 'about') goDownFromAbout();
+    if (position == 'projects') goDownFromProjects();
   } else if (move < 0 || keyPressed === 38) {
     if (position == 'about') goUpArrow();
     if (position == 'projects') goUpFromProjects();
+    if (position == 'experience') goUpFromExperience();
   } else if (keyPressed === 37) {
+    if (position == 'experience' && skillsShowed) goToGSOC(); 
     if (position == 'projects') $('#previousProject svg').click();
   } else if (keyPressed === 39) {
     if (position == 'projects') $('#nextProject svg').click();
+    if (position == 'experience' && !skillsShowed) goToSkills(); 
   }
   move = keyPressed = null;
 }
@@ -140,7 +164,7 @@ function goDownFromAbout() {
   anime({
     targets: '.about',
     translateY: 'calc(-200% - 6em)',
-    duration: 200,
+    duration: 400,
     easing: 'easeInOutQuad',
     complete: function () {
       $('#profileImage img').addClass('hover');
@@ -149,9 +173,9 @@ function goDownFromAbout() {
   anime({
     targets: '.projects',
     translateY: '-200%',
-    duration: 900,
+    duration: 1000,
     // delay: 50,
-    easing: 'easeOutElastic(1, 0.6)',
+    // easing: 'easeOutElastic(1, 0.5)',
     complete: function () {
       position = 'projects';
       if (currentProject == 1) {
@@ -177,7 +201,128 @@ function goUpFromProjects() {
   });
   anime({
     targets: '.projects',
-    translateY: '100%',
+    translateY: '0%',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+      $('#profileImage img').removeClass('hover');
+    },
+  });
+  anime({
+    targets: '.about',
+    translateY: ['calc(-200% - 6em)', '-100%'],
+    duration: 1000,
+    // direction: 'reverse',
+    complete: function () {
+      position = 'about';
+
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#about').addClass('hover');
+}
+
+let skillsLoaded = false;
+function goDownFromProjects() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Experience').fadeIn();
+  });
+  anime({
+    targets: '.projects',
+    translateY: 'calc(-300% - 6em)',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+    },
+  });
+  anime({
+    targets: '.experience',
+    translateY: '-300%',
+    duration: 1000,
+    // delay: 50,
+    // easing: 'easeOutElastic(1, 0.5)',
+    complete: function () {
+      position = 'experience';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#experience').addClass('hover');
+  if (!skillsLoaded) {
+    fetch('./assets/svgData').then((res) => res.blob()).then((blob) => {
+      let f = new FileReader();
+      f.onload = function (e) {
+        $('#skills').html(e.target.result);
+        skillsLoaded = true;
+      };
+      f.readAsText(blob);
+    });
+  }
+}
+
+function goUpFromExperience() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Projects').fadeIn();
+  });
+  anime({
+    targets: '.experience',
+    translateY: '0%',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+      $('#profileImage img').removeClass('hover');
+    },
+  });
+  anime({
+    targets: '.projects',
+    translateY: ['calc(-300% - 6em)', '-200%'],
+    duration: 1000,
+    // direction: 'reverse',
+    complete: function () {
+      position = 'projects';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#projects').addClass('hover');
+}
+
+function fromAboutToExperience() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Experience').fadeIn();
+  });
+  anime({
+    targets: '.about',
+    translateY: 'calc(-200% - 6em)',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+      $('#profileImage img').addClass('hover');
+    },
+  });
+  anime({
+    targets: '.experience',
+    translateY: '-300%',
+    duration: 1000,
+    // delay: 50,
+    // easing: 'easeOutElastic(1, 0.5)',
+    complete: function () {
+      position = 'experience';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#experience').addClass('hover');
+}
+
+function fromExperienceToAbout() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('About').fadeIn();
+  });
+  anime({
+    targets: '.experience',
+    translateY: '0%',
     duration: 400,
     easing: 'easeInOutQuad',
     complete: function () {
@@ -245,7 +390,7 @@ let projectNames = [
   'And this Website'
 ];
 let projectDescriptions = [
-  'A nodeJS utility for downloading youtube videos using ytdl-core and fluent-ffmpeg with support for splitting and downloading chunk files from youtube servers for more speed.',
+  'A nodeJS utility for downloading YouTube videos using ytdl-core and fluent-ffmpeg with support for splitting and downloading chunk files from YouTube servers for more speed.',
   'The frontend for the (YT-Downloader-backend) made using basic HTML, jQuery, Bootstrap',
   'Allowing visually and physically impaired individuals to perform certain web-tasks with ease without need of any personalized software/hardware all within a web browser. Used native web-speech API to perform all these tasks using only voice commands.',
   'The nodeJS consolidated backend for WebSight which is responsible for scraping web sites like google.com, news.google.com, wikipedia etc. Used for google translate functionality too.',
@@ -272,12 +417,16 @@ let projectsDeployLinks = [ '',
   'https://to-do-list-ang.herokuapp.com/', '',
 ];
 
-$('#nextProject svg').click(() => {
-  if (currentProject < projectNames.length + 1) goToNextProject();
-});
-$('#previousProject svg').click(() => {
-  if (currentProject > 1) goToPreviousProject();
-});
+function projectSwitchEvents() {
+  $('#nextProject svg').click(() => {
+    if (currentProject < projectNames.length + 1) goToNextProject();
+  });
+  $('#previousProject svg').click(() => {
+    if (currentProject > 1) goToPreviousProject();
+  });
+}
+projectSwitchEvents();
+
 
 function goToNextProject(){
   $('#nextProject svg, #previousProject svg').unbind('click');
@@ -287,7 +436,7 @@ function goToNextProject(){
       $(this).css('opacity', '0');
       nextProjectArrowAnimation.seek(0);
       anime.remove('#nextProject');
-      $(this).css('opacity', '1');
+      $(this).css('transform', 'translateX(0)').css('opacity', '1');
     });
   }
   if (currentProject == projectNames.length) {
@@ -317,12 +466,7 @@ function goToNextProject(){
         $('#projectDeployment').fadeOut();
       $('#projectGithub').attr('href', projectsGithubLinks[currentProject]);
       currentProject++;
-      $('#nextProject svg').click(() => {
-        if (currentProject < projectNames.length + 1) goToNextProject();
-      });
-      $('#previousProject svg').click(() => {
-        if (currentProject > 1) goToPreviousProject();
-      });
+      projectSwitchEvents();
     });
   }
 }
@@ -342,13 +486,37 @@ function goToPreviousProject() {
     $('#projectGithub').attr('href', projectsGithubLinks[currentProject - 2]);
     $(this).text(projectDescriptions[currentProject - 2]).fadeIn(function () {
       currentProject--;
-      $('#previousProject svg').click(() => {
-        if (currentProject > 1) goToPreviousProject();
-      });
-      $('#nextProject svg').click(() => {
-        if (currentProject < projectNames.length + 1) goToNextProject();
-      });
+      projectSwitchEvents();
     });
   });
   $('#nextProject').fadeIn();
+}
+
+let skillsShowed = false;
+$('#goToSkills').click(() => {
+  goToSkills();
+});
+$('#goToGSOC').click(() => {
+  goToGSOC();
+});
+
+function goToSkills() {
+  $('#gsocIcon').fadeOut();
+  $('#experienceDescription').fadeOut(function () {
+    $('#skills').fadeIn();
+    $('#skillsHeading').fadeIn();
+    $('#goToGSOC').fadeIn();
+    $('#goToSkills').fadeOut();
+    skillsShowed = true;
+  });
+}
+function goToGSOC() {
+  $('#skillsHeading').fadeOut();
+  $('#skills').fadeOut(function () {
+    $('#gsocIcon').fadeIn();
+    $('#experienceDescription').fadeIn();
+    $('#goToGSOC').fadeOut();
+    $('#goToSkills').fadeIn();
+    skillsShowed = false;
+  });
 }

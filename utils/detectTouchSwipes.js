@@ -32,9 +32,11 @@ function handleTouchMove(evt) {
     if (xDiff > 0) {
       /* left swipe */
       if (position == 'projects') $('#nextProject svg').click();
+      if (position == 'experience' && !skillsShowed) goToSkills();
     } else {
       /* right swipe */
       if (position == 'projects') $('#previousProject svg').click();
+      if (position == 'experience' && skillsShowed) goToGSOC();
     }
   } else {
     if (yDiff > 0) {
@@ -42,10 +44,12 @@ function handleTouchMove(evt) {
 
       if (position == 'main') goDownArrow();
       if (position == 'about') goDownFromAbout();
+      if (position == 'projects') goDownFromProjects();
     } else {
       /* down swipe */
       if (position == 'about') goUpArrow();
       if (position == 'projects') goUpFromProjects();
+      if (position == 'experience') goUpFromExperience();
     }
   }
   /* reset values */

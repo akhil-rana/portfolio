@@ -130,6 +130,7 @@ function setLightTheme() {
   $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))');
   $('#profileImage').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))');
   $('#profileImage').css('filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))');
+  $('#skills').css('background', 'rgba(255, 255, 255, 0.16)');
 }
 
 function setDarkTheme() {
@@ -139,4 +140,5 @@ function setDarkTheme() {
   $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
   $('#profileImage').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))');
   $('#profileImage').css('filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))');
+  $('#skills').css('background', 'rgba(255, 255, 255, 0)');
 }
