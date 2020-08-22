@@ -263,6 +263,7 @@ body {
   text-align: justify;
   line-height: 1.5;
 }
+
 #projectLinks {
   margin: 0.2em;
   font-size: 2em;
@@ -353,13 +354,25 @@ body {
 }
 
 @media only screen and (max-width: 358px), (max-height: 630px) {
-  #profileDescription {
+  #profileDescription,
+  #experienceDescription,
+  #goToSkillsBox {
     font-size: small;
   }
-}
-@media only screen and (max-width: 358px), (max-height: 630px) {
-  #profileDescription {
-    font-size: small;
+  #gsocIcon {
+    font-size: 1em;
+  }
+  #gsocIcon svg {
+    width: 30px;
+    height: auto;
+  }
+  #experienceBoxHeading {
+    font-size: larger;
+  }
+  #goToSkillsBox svg {
+    width: 15px;
+    height: auto;
+    margin-bottom: -0.2em !important;
   }
 }
 
@@ -378,20 +391,15 @@ body {
   .about #location {
     font-size: small;
   }
-  #aboutBox {
+  #aboutBox,
+  #projectsBox {
     max-width: 95%;
     display: flex;
   }
   #pictureBox {
     width: 30em;
   }
-  #projectsBox {
-    max-width: 95%;
-    display: flex;
-  }
-  #projectDescription {
-    font-size: 0.87em;
-  }
+  #projectDescription,
   #projectName {
     font-size: 0.87em;
   }
@@ -404,9 +412,15 @@ body {
   #projectLinks i {
     font-size: 0.85em;
   }
+  #skills {
+    padding: 0.3em 1em 0.3em 1em !important;
+  }
+  #skills svg {
+    width: 40px !important;
+  }
 }
 
-@media only screen and (max-height: 400px) {
+@media only screen and (max-height: 410px) {
   #projectDescription {
     font-size: 0.65em;
     margin-top: -1em;
@@ -428,6 +442,23 @@ body {
   }
   #projectLinks {
     margin-top: -0.3em;
+  }
+  #experienceDescription,
+  #goToSkillsBox {
+    font-size: 0.62em;
+    line-height: 1.2;
+    padding: 0em 1em 0em 1em !important;
+  }
+  #experienceBoxHeading {
+    padding: 0.3em 0.8em 0.3em 0.8em !important;
+  }
+  #skillsHeading {
+    font-size: 1em !important;
+  }
+  #skills svg {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0.2em !important;
   }
 }
 
