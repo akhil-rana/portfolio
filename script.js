@@ -110,7 +110,14 @@ function goDownArrow() {
         direction: 'alternate',
         easing: 'easeInOutSine',
         complete: function () {
-          $('nav li span').removeClass('hover');
+          lazyLoadProfileImage();
+          if (!profileImageLoaded){
+            lazyLoadProfileImage().then(()=>{
+              $('nav li span').removeClass('hover');
+            });
+          } else {
+            $('nav li span').removeClass('hover');
+          }
           $('#about').addClass('hover');
           $('body').css('overscroll-behavior', 'none');
           // $('.container-typing').hide();
@@ -170,6 +177,12 @@ function goDownFromAbout() {
       $('#profileImage img').addClass('hover');
     },
   });
+  movingNextProjectArrow();
+  $('nav li span').removeClass('hover');
+  $('#projects').addClass('hover');
+}
+
+function movingNextProjectArrow() {
   anime({
     targets: '.projects',
     translateY: '-200%',
@@ -190,8 +203,6 @@ function goDownFromAbout() {
       }
     },
   });
-  $('nav li span').removeClass('hover');
-  $('#projects').addClass('hover');
 }
 
 function goUpFromProjects() {
@@ -282,6 +293,7 @@ function goUpFromExperience() {
       position = 'projects';
     },
   });
+  movingNextProjectArrow();
   $('nav li span').removeClass('hover');
   $('#projects').addClass('hover');
 }
@@ -517,5 +529,18 @@ function goToGSOC() {
     $('#goToGSOC').fadeOut();
     $('#goToSkills').fadeIn();
     skillsShowed = false;
+  });
+}
+
+let profileImageLoaded = false;
+function lazyLoadProfileImage() {
+  return new Promise((resolve, reject) => {
+    fetch('https://i.ibb.co/0cz3z8W/me.jpg').then((res) => res.blob()).then((blob) => {
+      let urlCreator = window.URL || window.webkitURL;
+      let imageUrl = urlCreator.createObjectURL(blob);
+      $('#profileImage img').attr('src', imageUrl);
+      profileImageLoaded = true;
+      resolve();
+    });
   });
 }
