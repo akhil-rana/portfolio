@@ -111,18 +111,19 @@ function goDownArrow() {
         easing: 'easeInOutSine',
         complete: function () {
           lazyLoadProfileImage();
-          if (!profileImageLoaded){
-            lazyLoadProfileImage().then(()=>{
-              $('nav li span').removeClass('hover');
+          if (!profileImageLoaded) {
+            lazyLoadProfileImage().then(() => {
+              $('#profileImage img').removeClass('hover');
             });
           } else {
-            $('nav li span').removeClass('hover');
+            $('#profileImage img').removeClass('hover');
           }
           $('#about').addClass('hover');
           $('body').css('overscroll-behavior', 'none');
           // $('.container-typing').hide();
+          $('nav li span').removeClass('hover');
+          $('#about').addClass('hover');
           position = 'about';
-          $('#profileImage img').removeClass('hover');
           $('#navBar').fadeIn();
         },
       });
@@ -540,6 +541,7 @@ function lazyLoadProfileImage() {
       let imageUrl = urlCreator.createObjectURL(blob);
       $('#profileImage img').attr('src', imageUrl);
       profileImageLoaded = true;
+      $('#ImageLoading').fadeOut();
       resolve();
     });
   });
