@@ -211,7 +211,8 @@ body {
 }
 
 .projects,
-.experience {
+.experience,
+.contact {
   height: calc(100% - 6em);
   display: flex;
   justify-content: center;
@@ -224,7 +225,8 @@ body {
 }
 
 .projects #projectsBox,
-.experience #experienceBox {
+.experience #experienceBox,
+.contact #contactBox {
   width: 25em;
   min-width: 18.5em;
   /* min-height: 30em; */
@@ -240,7 +242,8 @@ body {
 }
 
 #projectsBoxHeading,
-#experienceBoxHeading {
+#experienceBoxHeading,
+#contactBoxHeading {
   padding: 0.8em;
   color: white;
   font-size: 1.7em;
@@ -310,7 +313,8 @@ body {
   font-size: 1.15em;
 }
 #projectsBox *,
-#experienceBox * {
+#experienceBox *,
+#contactBox {
   color: white;
 }
 
@@ -360,6 +364,42 @@ body {
     margin: 1em 1em 1em 2em;
     color: white;
   }
+}
+
+#sendMessageBox {
+  text-align: center;
+  padding: 1em;
+}
+#sendMessageBox form input,
+#sendMessageBox form textarea {
+  margin-bottom: 1em;
+  background: transparent;
+  border: none;
+  padding: 0.4em;
+  color: white;
+  border: 1px solid #ffffff59;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9em;
+  transition: ease 0.3s;
+}
+#sendMessageBox form input::placeholder,
+#sendMessageBox form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.692);
+}
+#sendMessageBox form input:focus,
+#sendMessageBox form textarea:focus {
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  outline: none;
+}
+#nameOfSender,
+#emailOfSender {
+  width: 21.7em;
+}
+#sendMessageBox svg {
+  margin-bottom: -0.36em;
+  margin-right: 0.5em;
 }
 
 @media only screen and (max-width: 358px), (max-height: 630px) {

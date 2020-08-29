@@ -31,6 +31,9 @@ $('#projects').click(() => {
   if (position == 'experience') {
     goUpFromExperience();
   }
+  if (position == 'contact') {
+    fromContactToProjects();
+  }
   if (navBarExpanded) {
     setTimeout(() => {
       $('#navBar #menuButton #menuIconSpan').click();
@@ -45,6 +48,9 @@ $('#about').click(() => {
   if (position == 'experience') {
     fromExperienceToAbout();
   }
+  if (position == 'contact') {
+    fromContactToAbout();
+  }
   if (navBarExpanded) {
     setTimeout(() => {
       $('#navBar #menuButton #menuIconSpan').click();
@@ -58,6 +64,26 @@ $('#experience').click(() => {
   }
   if (position == 'about') {
     fromAboutToExperience();
+  }
+  if (position == 'contact') {
+    goUpFromContact();
+  }
+  if (navBarExpanded) {
+    setTimeout(() => {
+      $('#navBar #menuButton #menuIconSpan').click();
+    }, 400);
+  }
+});
+
+$('#contact').click(() => {
+  if (position == 'about') {
+    fromAboutToContact();
+  }
+  if (position == 'experience') {
+    goDownFromExperience();
+  }
+  if (position == 'projects') {
+    fromProjectsToContact();
   }
   if (navBarExpanded) {
     setTimeout(() => {
@@ -76,10 +102,12 @@ function movePage(event) {
     if (position == 'main') goDownArrow();
     if (position == 'about') goDownFromAbout();
     if (position == 'projects') goDownFromProjects();
+    if (position == 'experience') goDownFromExperience();
   } else if (move < 0 || keyPressed === 38) {
     if (position == 'about') goUpArrow();
     if (position == 'projects') goUpFromProjects();
     if (position == 'experience') goUpFromExperience();
+    if (position == 'contact') goUpFromContact();
   } else if (keyPressed === 37) {
     if (position == 'experience' && skillsShowed) goToGSOC(); 
     if (position == 'projects') $('#previousProject svg').click();
@@ -325,6 +353,16 @@ function fromAboutToExperience() {
   });
   $('nav li span').removeClass('hover');
   $('#experience').addClass('hover');
+  if (!skillsLoaded) {
+    fetch('./assets/svgData').then((res) => res.blob()).then((blob) => {
+      let f = new FileReader();
+      f.onload = function (e) {
+        $('#skills').html(e.target.result);
+        skillsLoaded = true;
+      };
+      f.readAsText(blob);
+    });
+  }
 }
 
 function fromExperienceToAbout() {
@@ -353,6 +391,177 @@ function fromExperienceToAbout() {
   });
   $('nav li span').removeClass('hover');
   $('#about').addClass('hover');
+}
+
+function goDownFromExperience() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Contact').fadeIn();
+  });
+  anime({
+    targets: '.experience',
+    translateY: 'calc(-400% - 6em)',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {},
+  });
+  anime({
+    targets: '.contact',
+    translateY: '-400%',
+    duration: 1000,
+    // delay: 50,
+    // easing: 'easeOutElastic(1, 0.5)',
+    complete: function () {
+      position = 'contact';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#contact').addClass('hover');
+}
+
+function goUpFromContact() {
+  console.log(1);
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Experience').fadeIn();
+  });
+  anime({
+    targets: '.contact',
+    translateY: '0%',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {},
+  });
+  anime({
+    targets: '.experience',
+    translateY: ['calc(-400% - 6em)', '-300%'],
+    duration: 1000,
+    // direction: 'reverse',
+    complete: function () {
+      position = 'experience';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#experience').addClass('hover');
+  if (!skillsLoaded) {
+    fetch('./assets/svgData').then((res) => res.blob()).then((blob) => {
+      let f = new FileReader();
+      f.onload = function (e) {
+        $('#skills').html(e.target.result);
+        skillsLoaded = true;
+      };
+      f.readAsText(blob);
+    });
+  }
+}
+
+function fromAboutToContact(){
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Contact').fadeIn();
+  });
+  anime({
+    targets: '.about',
+    translateY: 'calc(-200% - 6em)',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+      $('#profileImage img').addClass('hover');
+    },
+  });
+  anime({
+    targets: '.contact',
+    translateY: '-400%',
+    duration: 1000,
+    // delay: 50,
+    // easing: 'easeOutElastic(1, 0.5)',
+    complete: function () {
+      position = 'contact';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#contact').addClass('hover');
+}
+
+function fromContactToAbout() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('About').fadeIn();
+  });
+  anime({
+    targets: '.contact',
+    translateY: '0%',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+      $('#profileImage img').removeClass('hover');
+    },
+  });
+  anime({
+    targets: '.about',
+    translateY: ['calc(-200% - 6em)', '-100%'],
+    duration: 1000,
+    // direction: 'reverse',
+    complete: function () {
+      position = 'about';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#about').addClass('hover');
+}
+
+function fromContactToProjects() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Projects').fadeIn();
+  });
+  anime({
+    targets: '.contact',
+    translateY: '0%',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+      $('#profileImage img').removeClass('hover');
+    },
+  });
+  anime({
+    targets: '.projects',
+    translateY: ['calc(-300% - 6em)', '-200%'],
+    duration: 1000,
+    // direction: 'reverse',
+    complete: function () {
+      position = 'projects';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#Projects').addClass('hover');
+}
+
+function fromProjectsToContact() {
+  position = 'processing';
+  $('#currentPosition').fadeOut(function () {
+    $(this).text('Contact').fadeIn();
+  });
+  anime({
+    targets: '.projects',
+    translateY: 'calc(-300% - 6em)',
+    duration: 400,
+    easing: 'easeInOutQuad',
+    complete: function () {
+    },
+  });
+  anime({
+    targets: '.contact',
+    translateY: '-400%',
+    duration: 1000,
+    // delay: 50,
+    // easing: 'easeOutElastic(1, 0.5)',
+    complete: function () {
+      position = 'contact';
+    },
+  });
+  $('nav li span').removeClass('hover');
+  $('#contact').addClass('hover');
 }
 
 $('#navBar #menuButton #menuIconSpan').click(() => {
