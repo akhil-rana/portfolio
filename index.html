@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./utils/themeToggle.css" />
     <link rel="stylesheet" href="./utils/typingEffect.css" />
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./utils/sendButton.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -225,14 +226,14 @@
           </div>
         </div>
         <div class="contact">
-          <div id="contactBox">
+          <div id="contactBox" style="overflow: hidden">
             <div id="contactBoxHeading">
               Get to me
               <hr style="margin-top: 0.6em" />
             </div>
             <div id="sendMessageBox">
-              <form id="sendMailForm">
-                <div>
+              <form onsubmit="return false;" id="sendMailForm">
+                <div class="emailForm">
                   <i data-feather="user"></i
                   ><input
                     id="nameOfSender"
@@ -241,7 +242,7 @@
                     required
                   />
                 </div>
-                <div>
+                <div class="emailForm">
                   <i data-feather="mail"></i
                   ><input
                     id="emailOfSender"
@@ -251,13 +252,53 @@
                   />
                 </div>
                 <textarea
+                  class="emailForm"
                   id="emailMessage"
                   cols="37"
                   rows="6"
                   placeholder="Type your message here"
                   required
                 ></textarea>
+                <div style="display: flex; align-items: center">
+                  <button
+                    type="submit"
+                    class="sendButton"
+                    style="margin: 0 auto"
+                  >
+                    <span class="default">Send</span>
+                    <span class="success"><b>Message Sent</b></span>
+                    <div class="left"></div>
+                    <div class="right"></div>
+                  </button>
+                </div>
               </form>
+            </div>
+            <div id="goToSocialBox" style="height: 2.2em">
+              <div
+                id="goToSocial"
+                style="position: absolute; right: 1em; cursor: pointer"
+              >
+                Social
+                <i
+                  style="margin-bottom: -0.4em"
+                  data-feather="chevron-right"
+                ></i>
+              </div>
+              <div
+                id="goToMessage"
+                style="
+                  position: absolute;
+                  left: 1em;
+                  display: none;
+                  cursor: pointer;
+                "
+              >
+                <i
+                  style="margin-bottom: -0.4em"
+                  data-feather="chevron-left"
+                ></i>
+                Back
+              </div>
             </div>
           </div>
         </div>
@@ -307,6 +348,7 @@
       <script src="./utils/toggleTheme.js"></script>
       <script src="./utils/typingEffect.js"></script>
       <script src="./utils/detectTouchSwipes.js"></script>
+      <script src="./utils/sendButton.js"></script>
     </div>
   </body>
 </html>
