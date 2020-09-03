@@ -755,3 +755,28 @@ function lazyLoadProfileImage() {
     });
   });
 }
+
+function sendMail() {
+  let myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+
+  let data = JSON.stringify({
+    name: $('#nameOfSender').val(),
+    email: $('#emailOfSender').val(),
+    message: $('#emailMessage').val(),
+  });
+
+  let requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: data,
+    redirect: 'follow',
+  };
+
+  fetch(
+    'https://akhilrana-portfolio-backend.herokuapp.com/sendMessage',
+    requestOptions
+  ).then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log('error', error));
+}
