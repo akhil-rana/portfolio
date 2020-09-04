@@ -780,16 +780,25 @@ function sendMail() {
     .catch((error) => console.log('error', error));
 }
 
+let socialShown = false;
 $('#goToSocial').click(() => {
-  $('#goToSocial, #sendMessageBox').fadeOut(function () {
-    $('#goToMessage, #socialBox').fadeIn();
-  });
+  goToSocial();
 });
 $('#goToMessage').click(() => {
+  goToMessage();
+});
+function goToSocial(){
+  $('#goToSocial, #sendMessageBox').fadeOut(function () {
+    $('#goToMessage, #socialBox').fadeIn();
+    socialShown = true;
+  });
+}
+function goToMessage(){
   $('#goToMessage, #socialBox').fadeOut(function () {
     $('#goToSocial, #sendMessageBox').fadeIn();
+    socialShown = false;
   });
-});
+}
 
 $('.social-btn').mouseenter(function () {
   activateSocialLinks();
