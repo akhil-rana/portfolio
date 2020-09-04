@@ -69,25 +69,6 @@ document.querySelectorAll('.sendButton').forEach((button) => {
               sendMail();
               $('.emailForm').fadeOut();
               $('.sendButton').css('cursor', 'default');
-              //   setTimeout(() => {
-              //     button.removeAttribute('style');
-              //     gsap.fromTo(
-              //       button,
-              //       {
-              //         opacity: 0,
-              //         y: -8,
-              //       },
-              //       {
-              //         opacity: 1,
-              //         y: 0,
-              //         clearProps: true,
-              //         duration: 0.3,
-              //         onComplete() {
-              //           button.classList.remove('active');
-              //         },
-              //       }
-              //     );
-              //   }, 2000);
             },
           },
         ],
