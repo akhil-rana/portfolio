@@ -37,19 +37,21 @@ function handleTouchMove(evt) {
       /* right swipe */
       if (position == 'projects') $('#previousProject svg').click();
       if (position == 'experience' && skillsShowed) goToGSOC();
+      if (position == 'contact' && socialShown) goToMessage();
     }
   } else {
     if (yDiff > 0) {
       /* up swipe */
-
       if (position == 'main') goDownArrow();
       if (position == 'about') goDownFromAbout();
       if (position == 'projects') goDownFromProjects();
+      if (position == 'experience') goDownFromExperience();
     } else {
       /* down swipe */
       if (position == 'about') goUpArrow();
       if (position == 'projects') goUpFromProjects();
       if (position == 'experience') goUpFromExperience();
+      if (position == 'contact') goUpFromContact();
     }
   }
   /* reset values */
