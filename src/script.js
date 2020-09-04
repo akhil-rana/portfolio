@@ -772,7 +772,6 @@ function sendMail() {
     body: data,
     redirect: 'follow',
   };
-
   fetch(
     'https://akhilrana-portfolio-backend.herokuapp.com/sendMessage',
     requestOptions
