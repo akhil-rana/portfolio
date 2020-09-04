@@ -781,11 +781,34 @@ function sendMail() {
     .catch((error) => console.log('error', error));
 }
 
-$('#goToSocial').click(()=>{
-  $('#goToSocial, #sendMessageBox').fadeOut();
-  $('#goToMessage, #socialBox').fadeIn();
+$('#goToSocial').click(() => {
+  $('#goToSocial, #sendMessageBox').fadeOut(function () {
+    $('#goToMessage, #socialBox').fadeIn();
+  });
 });
-$('#goToMessage').click(()=>{
-  $('#goToMessage, #socialBox').fadeOut();
-  $('#goToSocial, #sendMessageBox').fadeIn();
+$('#goToMessage').click(() => {
+  $('#goToMessage, #socialBox').fadeOut(function () {
+    $('#goToSocial, #sendMessageBox').fadeIn();
+  });
 });
+
+$('.social-btn').mouseenter(function () {
+  activateSocialLinks();
+});
+$('.social-btn').mouseleave(function () {
+  deactivateSocialLinks();
+});
+
+function deactivateSocialLinks() {
+  setTimeout(function () {
+    $('.social-btn a').attr('href', '#');
+  }, 800);
+}
+function activateSocialLinks() {
+  setTimeout(function () {
+    $('#linkedin a').attr('href', 'https://www.linkedin.com/in/rana-akhil/');
+    $('#telegram a').attr('href', 'https://t.me/AkhilRana');
+    $('#medium a').attr('href', 'https://medium.com/@akhilrana0001');
+    $('#github a').attr('href', 'https://github.com/akhil-rana');
+  }, 800);
+}
