@@ -553,11 +553,9 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #333;
-  opacity: 0;
-}
-
-.social-btn a {
   text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .social-btn a:hover {
@@ -574,6 +572,7 @@ textarea {
   opacity: 1;
   margin-left: 6px;
   width: max-content;
+  pointer-events: auto;
 }
 
 #linkedin svg {
