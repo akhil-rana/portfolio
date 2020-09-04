@@ -516,3 +516,70 @@ body {
     top: 0;
   }
 }
+
+textarea {
+  resize: none;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-btn {
+  cursor: default;
+  height: 50px;
+  width: 50px;
+  font-family: 'Titillium Web', sans-serif;
+  border-radius: 10px;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+  background: #ffffffbf;
+  margin: 5px;
+  transition: 1s;
+}
+
+.social-btn a {
+  width: 0;
+  transition: 1s;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #333;
+  opacity: 0;
+}
+
+.social-btn a {
+  text-decoration: none;
+}
+
+.social-btn a:hover {
+  text-decoration: underline;
+}
+.social-btn:hover {
+  width: 9.5em;
+  border-radius: 5px;
+  background: white;
+}
+
+.social-btn:hover a {
+  padding: 2px;
+  opacity: 1;
+  margin-left: 6px;
+  width: max-content;
+}
+
+#linkedin svg {
+  fill: #0e76a8;
+}
+
+#github {
+  fill: #333;
+}

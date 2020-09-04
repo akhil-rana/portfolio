@@ -780,3 +780,12 @@ function sendMail() {
     .then((result) => console.log(result))
     .catch((error) => console.log('error', error));
 }
+
+$('#goToSocial').click(()=>{
+  $('#goToSocial, #sendMessageBox').fadeOut();
+  $('#goToMessage, #socialBox').fadeIn();
+});
+$('#goToMessage').click(()=>{
+  $('#goToMessage, #socialBox').fadeOut();
+  $('#goToSocial, #sendMessageBox').fadeIn();
+});
