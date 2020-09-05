@@ -336,7 +336,7 @@ body {
   transition: ease 0.4s;
 }
 #gsocIcon svg:hover {
-  transform: scale(1.05);
+  transform: scale(1.2);
 }
 
 #skills {
@@ -605,3 +605,10 @@ textarea {
   }
 }
 
+.sendButton:hover .default {
+  /* font-size: 1.2em; */
+  transform: scale(1.2);
+}
+.sendButton .default {
+  transition: ease 0.5s;
+}
