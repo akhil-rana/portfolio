@@ -420,7 +420,6 @@ function goDownFromExperience() {
 }
 
 function goUpFromContact() {
-  console.log(1);
   position = 'processing';
   $('#currentPosition').fadeOut(function () {
     $(this).text('Experience').fadeIn();
