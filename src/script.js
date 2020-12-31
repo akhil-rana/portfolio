@@ -744,7 +744,7 @@ function goToGSOC() {
 let profileImageLoaded = false;
 function lazyLoadProfileImage() {
   return new Promise((resolve, reject) => {
-    fetch('https://i.ibb.co/0cz3z8W/me.jpg').then((res) => res.blob()).then((blob) => {
+    fetch('https://ik.imagekit.io/at6kwvrzots/me_GHKH0E1xy.jpg').then((res) => res.blob()).then((blob) => {
       let urlCreator = window.URL || window.webkitURL;
       let imageUrl = urlCreator.createObjectURL(blob);
       $('#profileImage img').attr('src', imageUrl);

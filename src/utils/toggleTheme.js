@@ -125,7 +125,7 @@ $(document).ready(() => {
 
 function setLightTheme() {
   localStorage.setItem('theme', 'light');
-  $('#themeCSS').attr('href', './utils/background-light.css');
+  $('#themeCSS').attr('href', 'https://cdn.jsdelivr.net/gh/akhil-rana/portfolio@master/src/utils/background-light.min.css');
   $('#toggle-theme-svg').css('filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))');
   $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))');
   $('#profileImage').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))');
@@ -135,7 +135,7 @@ function setLightTheme() {
 
 function setDarkTheme() {
   localStorage.setItem('theme', 'dark');
-  $('#themeCSS').attr('href', './utils/background.css');
+  $('#themeCSS').attr('href', 'https://cdn.jsdelivr.net/gh/akhil-rana/portfolio@master/src/utils/background.min.css');
   $('#toggle-theme-svg').css('filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
   $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
   $('#profileImage').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))');
