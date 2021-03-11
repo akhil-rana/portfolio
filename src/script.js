@@ -533,7 +533,7 @@ function fromContactToProjects() {
     },
   });
   $('nav li span').removeClass('hover');
-  $('#Projects').addClass('hover');
+  $('#projects').addClass('hover');
 }
 
 function fromProjectsToContact() {
