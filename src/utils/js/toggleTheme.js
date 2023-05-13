@@ -113,32 +113,61 @@ $(document).ready(() => {
     });
   } else {
     localStorage.setItem('theme', 'dark');
-    $('#input-theme-toggle').click().change(() => {
-      if (localStorage.getItem('theme') == 'light') {
-        setDarkTheme();
-      } else {
-        setLightTheme();
-      }
-    });
+    $('#input-theme-toggle')
+      .click()
+      .change(() => {
+        if (localStorage.getItem('theme') == 'light') {
+          setDarkTheme();
+        } else {
+          setLightTheme();
+        }
+      });
   }
 });
 
 function setLightTheme() {
   localStorage.setItem('theme', 'light');
-  $('#themeCSS').attr('href', 'https://cdn.jsdelivr.net/gh/akhil-rana/portfolio@master/src/utils/background-light.min.css');
-  $('#toggle-theme-svg').css('filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))');
-  $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))');
-  $('#profileImage').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))');
-  $('#profileImage').css('filter', 'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))');
+  document.getElementById('main').style.setProperty('--color1', '#766fb3');
+  document.getElementById('main').style.setProperty('--color2', '#357494');
+  // $('#themeCSS').attr('href', './utils/background-light.css');
+  $('#toggle-theme-svg').css(
+    'filter',
+    'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))'
+  );
+  $('#toggle-theme-svg').css(
+    '-webkit-filter',
+    'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4))'
+  );
+  $('#profileImage').css(
+    '-webkit-filter',
+    'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))'
+  );
+  $('#profileImage').css(
+    'filter',
+    'drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.48))'
+  );
   $('#skills').css('background', 'rgba(255, 255, 255, 0.16)');
 }
 
 function setDarkTheme() {
   localStorage.setItem('theme', 'dark');
-  $('#themeCSS').attr('href', 'https://cdn.jsdelivr.net/gh/akhil-rana/portfolio@master/src/utils/background.min.css');
-  $('#toggle-theme-svg').css('filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
-  $('#toggle-theme-svg').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))');
-  $('#profileImage').css('-webkit-filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))');
-  $('#profileImage').css('filter', 'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))');
+  document.getElementById('main').style.setProperty('--color1', '#1b2735');
+  document.getElementById('main').style.setProperty('--color2', '#090a0f');
+  $('#toggle-theme-svg').css(
+    'filter',
+    'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))'
+  );
+  $('#toggle-theme-svg').css(
+    '-webkit-filter',
+    'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.048))'
+  );
+  $('#profileImage').css(
+    '-webkit-filter',
+    'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))'
+  );
+  $('#profileImage').css(
+    'filter',
+    'drop-shadow(0px 3px 3px rgba(255, 255, 255, 0.2))'
+  );
   $('#skills').css('background', 'rgba(255, 255, 255, 0)');
 }

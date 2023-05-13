@@ -1,16 +1,27 @@
-const express = require("express");
-const path = require("path");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+if (process.env.NODE_ENV === 'production') {
+  const fs = require('fs');
+  if (!fs.existsSync('./dist')) {
+    console.log('Please (re)run "npm run build" to create the dist folder\n');
+    process.exit(1);
+  }
+}
+
+serveFolder = process.env.NODE_ENV == 'production' ? 'dist' : 'src';
 
 const app = express();
 app.use(cors());
+const PORT = process.env.PORT || 8080;
 
-// Serve only the static files form the src directory
-app.use(express.static(__dirname + "/src"));
+app.use(express.static(serveFolder));
 
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname + "/src/index.html"));
+app.get('/', (_req, res) => {
+  res.sendFile('index.html', { root: __dirname + '/' + serveFolder + '/' });
 });
 
-
-app.listen(process.env.PORT || 8080);
+app.listen(PORT, () => {
+  console.log('Server live at :' + PORT);
+});

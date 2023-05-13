@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .container-typing {
   cursor: default;
@@ -8,8 +7,10 @@
   justify-content: center;
   align-items: center;
   font-family: 'Montserrat', sans-serif;
+  font-display: swap;
   color: #eee;
 }
+
 .container-typing p {
   font-size: 3rem;
   padding: 0.5rem;
@@ -18,10 +19,12 @@
   text-align: center;
   overflow: hidden;
 }
+
 .container-typing p span.typed-text {
   font-weight: normal;
   color: #ddc932;
 }
+
 .container-typing p span.cursor {
   display: inline-block;
   background-color: #ccc;
@@ -29,22 +32,28 @@
   width: 3px;
   animation: blink 1s infinite;
 }
+
 .container-typing p span.cursor.typing {
   animation: none;
 }
+
 @keyframes blink {
   0% {
     background-color: #ccc;
   }
+
   49% {
     background-color: #ccc;
   }
+
   50% {
     background-color: transparent;
   }
+
   99% {
     background-color: transparent;
   }
+
   100% {
     background-color: #ccc;
   }

@@ -10,11 +10,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin: 0;
   padding: 0;
 }
+
+@property --color1 {
+  syntax: '<color>';
+  initial-value: #1b2735;
+  inherits: false;
+}
+
+@property --color2 {
+  syntax: '<color>';
+  initial-value: #090a0f;
+  inherits: false;
+}
+
 #main {
+  --color1: #1b2735;
+  --color2: #090a0f;
   height: 100%;
   width: 100%;
   position: fixed;
-  background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
+  background-image: radial-gradient(circle at bottom, var(--color1) 0%, var(--color2) 100%);
+  transition: --color1 3s, --color2 3s;
   overflow: hidden;
 }
 

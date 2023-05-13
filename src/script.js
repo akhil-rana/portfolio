@@ -109,11 +109,11 @@ function movePage(event) {
     if (position == 'experience') goUpFromExperience();
     if (position == 'contact') goUpFromContact();
   } else if (keyPressed === 37) {
-    if (position == 'experience' && skillsShowed) goToGSOC(); 
+    if (position == 'experience' && skillsShowed) goToGSOC();
     if (position == 'projects') $('#previousProject svg').click();
   } else if (keyPressed === 39) {
     if (position == 'projects') $('#nextProject svg').click();
-    if (position == 'experience' && !skillsShowed) goToSkills(); 
+    if (position == 'experience' && !skillsShowed) goToSkills();
   }
   move = keyPressed = null;
 }
@@ -255,7 +255,6 @@ function goUpFromProjects() {
     // direction: 'reverse',
     complete: function () {
       position = 'about';
-
     },
   });
   $('nav li span').removeClass('hover');
@@ -273,8 +272,7 @@ function goDownFromProjects() {
     translateY: 'calc(-300% - 6em)',
     duration: 400,
     easing: 'easeInOutQuad',
-    complete: function () {
-    },
+    complete: function () {},
   });
   anime({
     targets: '.experience',
@@ -289,14 +287,16 @@ function goDownFromProjects() {
   $('nav li span').removeClass('hover');
   $('#experience').addClass('hover');
   if (!skillsLoaded) {
-    fetch('./assets/svgData').then((res) => res.blob()).then((blob) => {
-      let f = new FileReader();
-      f.onload = function (e) {
-        $('#skills').html(e.target.result);
-        skillsLoaded = true;
-      };
-      f.readAsText(blob);
-    });
+    fetch('./assets/svgData')
+      .then((res) => res.blob())
+      .then((blob) => {
+        let f = new FileReader();
+        f.onload = function (e) {
+          $('#skills').html(e.target.result);
+          skillsLoaded = true;
+        };
+        f.readAsText(blob);
+      });
   }
 }
 
@@ -310,8 +310,7 @@ function goUpFromExperience() {
     translateY: '0%',
     duration: 400,
     easing: 'easeInOutQuad',
-    complete: function () {
-    },
+    complete: function () {},
   });
   anime({
     targets: '.projects',
@@ -354,14 +353,16 @@ function fromAboutToExperience() {
   $('nav li span').removeClass('hover');
   $('#experience').addClass('hover');
   if (!skillsLoaded) {
-    fetch('./assets/svgData').then((res) => res.blob()).then((blob) => {
-      let f = new FileReader();
-      f.onload = function (e) {
-        $('#skills').html(e.target.result);
-        skillsLoaded = true;
-      };
-      f.readAsText(blob);
-    });
+    fetch('./assets/svgData')
+      .then((res) => res.blob())
+      .then((blob) => {
+        let f = new FileReader();
+        f.onload = function (e) {
+          $('#skills').html(e.target.result);
+          skillsLoaded = true;
+        };
+        f.readAsText(blob);
+      });
   }
 }
 
@@ -386,7 +387,6 @@ function fromExperienceToAbout() {
     // direction: 'reverse',
     complete: function () {
       position = 'about';
-
     },
   });
   $('nav li span').removeClass('hover');
@@ -443,18 +443,20 @@ function goUpFromContact() {
   $('nav li span').removeClass('hover');
   $('#experience').addClass('hover');
   if (!skillsLoaded) {
-    fetch('./assets/svgData').then((res) => res.blob()).then((blob) => {
-      let f = new FileReader();
-      f.onload = function (e) {
-        $('#skills').html(e.target.result);
-        skillsLoaded = true;
-      };
-      f.readAsText(blob);
-    });
+    fetch('./assets/svgData')
+      .then((res) => res.blob())
+      .then((blob) => {
+        let f = new FileReader();
+        f.onload = function (e) {
+          $('#skills').html(e.target.result);
+          skillsLoaded = true;
+        };
+        f.readAsText(blob);
+      });
   }
 }
 
-function fromAboutToContact(){
+function fromAboutToContact() {
   position = 'processing';
   $('#currentPosition').fadeOut(function () {
     $(this).text('Contact').fadeIn();
@@ -533,7 +535,7 @@ function fromContactToProjects() {
     },
   });
   $('nav li span').removeClass('hover');
-  $('#projects').addClass('hover');
+  $('#Projects').addClass('hover');
 }
 
 function fromProjectsToContact() {
@@ -546,8 +548,7 @@ function fromProjectsToContact() {
     translateY: 'calc(-300% - 6em)',
     duration: 400,
     easing: 'easeInOutQuad',
-    complete: function () {
-    },
+    complete: function () {},
   });
   anime({
     targets: '.contact',
@@ -600,6 +601,8 @@ $('#navBar #menuButton #menuIconSpan').click(() => {
 
 let currentProject = 1;
 let projectNames = [
+  'Virtual-BG',
+  'Peerivate',
   'YT-Downloader-Backend',
   'YT-Downloader',
   'WebSight',
@@ -607,9 +610,11 @@ let projectNames = [
   'Google Search Scraper',
   'D-Learn',
   'Angular-to-do',
-  'And this Website'
+  'And this Website',
 ];
 let projectDescriptions = [
+  'Easily add virtual background effects to your video/camera input inside any web browser using this package with over 6000 downloads on npm',
+  'A fully anonymous private peer to peer audio/video calls solution based on WebRTC. Built on top of react and tailwind with modern structure in mind',
   'A nodeJS utility for downloading YouTube videos using ytdl-core and fluent-ffmpeg with support for splitting and downloading chunk files from YouTube servers for more speed.',
   'The frontend for the (YT-Downloader-backend) made using basic HTML, jQuery, Bootstrap',
   'Allowing visually and physically impaired individuals to perform certain web-tasks with ease without need of any personalized software/hardware all within a web browser. Used native web-speech API to perform all these tasks using only voice commands.',
@@ -617,11 +622,22 @@ let projectDescriptions = [
   'A really simple NodeJS project to scrape search results from google.com and return them in JSON format using Puppeteer and Cheerio.',
   'A simple design based implementation for a distance learning android app. Implemented various features like course completion status, YouTube API support, WebView integration, Login/signup functionality, user profile update, password reset and Admin dashboard etc.',
   'A simple frontend To-do list made using material-angular with dark theme support and ready for Heroku deployment.',
-  'A simple yet beautiful personal portfolio website with dark theme support made without using any frontend libraries. Everything implemented with core CSS, JS, jQuery etc.'
+  'A simple yet beautiful personal portfolio website with dark theme support made without using any frontend libraries. Everything implemented with core CSS, JS, jQuery etc.',
 ];
 
-let projectsDeployStatus = [false, true, true, false, false, false, true, false];
+let projectsDeployStatus = [
+  true,
+  true,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+];
 let projectsGithubLinks = [
+  'https://github.com/akhil-rana/virtual-bg',
+  'https://github.com/akhil-rana/peerivate',
   'https://github.com/akhil-rana/YT-Downloader-Backend',
   'https://github.com/akhil-rana/YT-Downloader',
   'https://github.com/akhil-rana/WebSight',
@@ -629,12 +645,19 @@ let projectsGithubLinks = [
   'https://github.com/akhil-rana/Google-Scrape-NodeJS',
   'https://github.com/akhil-rana/D-Learn',
   'https://github.com/akhil-rana/Angular-to-do',
-  'https://github.com/akhil-rana/akhil-rana.github.io',
+  'https://github.com/akhil-rana/portfolio',
 ];
-let projectsDeployLinks = [ '',
-  'https://akhil-rana.github.io/YT-Downloader',
-  'https://web-sight.herokuapp.com', '', '', '',
-  'https://to-do-list-ang.herokuapp.com/', '',
+let projectsDeployLinks = [
+  'https://demo.virtualbg.akhilrana.com/',
+  'https://peerivate.akhilrana.com/',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
 ];
 
 function projectSwitchEvents() {
@@ -647,8 +670,7 @@ function projectSwitchEvents() {
 }
 projectSwitchEvents();
 
-
-function goToNextProject(){
+function goToNextProject() {
   $('#nextProject svg, #previousProject svg').unbind('click');
   if (currentProject == 1) {
     $('#nextProject').fadeOut(function () {
@@ -670,7 +692,7 @@ function goToNextProject(){
     });
     $('#projectDeployment').fadeOut();
     $('#nextProject').fadeOut();
-    $('#projectDescription').fadeOut(function(){
+    $('#projectDescription').fadeOut(function () {
       $(this).text('').fadeIn();
     });
   } else {
@@ -681,9 +703,10 @@ function goToNextProject(){
     $('#projectDescription').fadeOut(function () {
       $(this).text(projectDescriptions[currentProject]).fadeIn();
       if (projectsDeployStatus[currentProject])
-        $('#projectDeployment').fadeIn().attr('href', projectsDeployLinks[currentProject]);
-      else
-        $('#projectDeployment').fadeOut();
+        $('#projectDeployment')
+          .fadeIn()
+          .attr('href', projectsDeployLinks[currentProject]);
+      else $('#projectDeployment').fadeOut();
       $('#projectGithub').attr('href', projectsGithubLinks[currentProject]);
       currentProject++;
       projectSwitchEvents();
@@ -697,17 +720,23 @@ function goToPreviousProject() {
     $('#previousProject').fadeOut();
   }
   $('#projectName').fadeOut(function () {
-    $(this).text(projectNames[currentProject - 2]).fadeIn();
+    $(this)
+      .text(projectNames[currentProject - 2])
+      .fadeIn();
   });
   $('#projectDescription').fadeOut(function () {
     if (projectsDeployStatus[currentProject - 2])
-      $('#projectDeployment').fadeIn().attr('href', projectsDeployLinks[currentProject - 2]);
+      $('#projectDeployment')
+        .fadeIn()
+        .attr('href', projectsDeployLinks[currentProject - 2]);
     else $('#projectDeployment').fadeOut();
     $('#projectGithub').attr('href', projectsGithubLinks[currentProject - 2]);
-    $(this).text(projectDescriptions[currentProject - 2]).fadeIn(function () {
-      currentProject--;
-      projectSwitchEvents();
-    });
+    $(this)
+      .text(projectDescriptions[currentProject - 2])
+      .fadeIn(function () {
+        currentProject--;
+        projectSwitchEvents();
+      });
   });
   $('#nextProject').fadeIn();
 }
@@ -744,14 +773,16 @@ function goToGSOC() {
 let profileImageLoaded = false;
 function lazyLoadProfileImage() {
   return new Promise((resolve, reject) => {
-    fetch('https://ik.imagekit.io/at6kwvrzots/me_GHKH0E1xy.jpg').then((res) => res.blob()).then((blob) => {
-      let urlCreator = window.URL || window.webkitURL;
-      let imageUrl = urlCreator.createObjectURL(blob);
-      $('#profileImage img').attr('src', imageUrl);
-      profileImageLoaded = true;
-      $('#ImageLoading').fadeOut();
-      resolve();
-    });
+    fetch('https://i.ibb.co/0cz3z8W/me.jpg')
+      .then((res) => res.blob())
+      .then((blob) => {
+        let urlCreator = window.URL || window.webkitURL;
+        let imageUrl = urlCreator.createObjectURL(blob);
+        $('#profileImage img').attr('src', imageUrl);
+        profileImageLoaded = true;
+        $('#ImageLoading').fadeOut();
+        resolve();
+      });
   });
 }
 
@@ -771,11 +802,18 @@ function sendMail() {
     body: data,
     redirect: 'follow',
   };
-  fetch(
-    'https://akhilrana-portfolio-backend.herokuapp.com/sendMessage',
-    requestOptions
-  ).then((response) => response.text())
-    .then((result) => console.log(result))
+  fetch('./utils/config.json')
+    .then((response) => response.json())
+    .then((json) => {
+      const base_url = json.PORTFOLIO_BACKEND_BASE_URL;
+      fetch(
+        base_url + '/sendMessage',
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.log('error', error));
+    })
     .catch((error) => console.log('error', error));
 }
 
@@ -786,13 +824,13 @@ $('#goToSocial').click(() => {
 $('#goToMessage').click(() => {
   goToMessage();
 });
-function goToSocial(){
+function goToSocial() {
   $('#goToSocial, #sendMessageBox').fadeOut(function () {
     $('#goToMessage, #socialBox').fadeIn();
     socialShown = true;
   });
 }
-function goToMessage(){
+function goToMessage() {
   $('#goToMessage, #socialBox').fadeOut(function () {
     $('#goToSocial, #sendMessageBox').fadeIn();
     socialShown = false;
