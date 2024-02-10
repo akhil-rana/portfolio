@@ -12,13 +12,19 @@ body {
   top: 0;
 }
 
-#nextDownArrow {
+#nextDownArrowContainer {
   position: absolute;
   bottom: 0.2em;
   text-align: center;
   width: 100%;
   font-size: 4em;
   color: white;
+  display: flex;
+  justify-content: center;
+}
+
+#nextDownArrow {
+  width: auto;
   -webkit-animation: action 1s ease infinite alternate;
   animation: action 1s ease infinite alternate;
 }

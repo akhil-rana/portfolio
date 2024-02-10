@@ -55,3 +55,10 @@
   height: 2.5em;
   width: 4em;
 }
+
+::-webkit-full-page-media,
+_:future,
+:root #themeToggle {
+  /* fix for safari for position of theme toggle */
+  top: -0.4em;
+}

@@ -20,7 +20,7 @@ $(window).resize(() => {
   }
 });
 
-$('#nextDownArrow svg').click(() => {
+$('#nextDownArrow').click(() => {
   goDownArrow();
 });
 
@@ -92,18 +92,23 @@ $('#contact').click(() => {
   }
 });
 
+let isMoving = false;
 document.querySelector('body').onwheel = movePage;
 document.onkeydown = movePage;
 
 function movePage(event) {
+  if (isMoving) return;
+  isMoving = true;
   let move = event.deltaY || null;
   let keyPressed = event.keyCode || null;
   if (move > 0 || keyPressed === 40) {
+    console.log('move down');
     if (position == 'main') goDownArrow();
     if (position == 'about') goDownFromAbout();
     if (position == 'projects') goDownFromProjects();
     if (position == 'experience') goDownFromExperience();
   } else if (move < 0 || keyPressed === 38) {
+    console.log('move up');
     if (position == 'about') goUpArrow();
     if (position == 'projects') goUpFromProjects();
     if (position == 'experience') goUpFromExperience();
@@ -112,10 +117,11 @@ function movePage(event) {
     if (position == 'experience' && skillsShowed) goToGSOC();
     if (position == 'projects') $('#previousProject svg').click();
   } else if (keyPressed === 39) {
-    if (position == 'projects') $('#nextProject svg').click();
+    if (position == 'projects') $('#nextProject').click();
     if (position == 'experience' && !skillsShowed) goToSkills();
   }
   move = keyPressed = null;
+  setTimeout(() => { isMoving = false; }, 2000);
 }
 
 function goDownArrow() {
@@ -661,17 +667,17 @@ let projectsDeployLinks = [
 ];
 
 function projectSwitchEvents() {
-  $('#nextProject svg').click(() => {
+  $('#nextProject').click(() => {
     if (currentProject < projectNames.length + 1) goToNextProject();
   });
-  $('#previousProject svg').click(() => {
+  $('#previousProject').click(() => {
     if (currentProject > 1) goToPreviousProject();
   });
 }
 projectSwitchEvents();
 
 function goToNextProject() {
-  $('#nextProject svg, #previousProject svg').unbind('click');
+  $('#nextProject, #previousProject').unbind('click');
   if (currentProject == 1) {
     $('#nextProject').fadeOut(function () {
       $(this).fadeIn();
@@ -715,7 +721,7 @@ function goToNextProject() {
 }
 
 function goToPreviousProject() {
-  $('#previousProject svg, #nextProject svg').unbind('click');
+  $('#previousProject, #nextProject').unbind('click');
   if (currentProject < 3) {
     $('#previousProject').fadeOut();
   }
