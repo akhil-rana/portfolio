@@ -1,865 +1,882 @@
 let position = 'main';
 let navBarExpanded = false;
+let isMoving = false;
+let socialShown = false;
+let profileImageLoaded = false;
+let currentProject = 1;
+let currentExperience = 1;
+let nextProjectArrowAnimation = null;
+let nextExperienceArrowAnimation = null;
 
-$(document).ready(() => {
-  $('#profileImage img').addClass('hover');
-});
+const elements = {
+  navBar: document.getElementById('navBar'),
+  navLinks: document.querySelectorAll('#navBar li'),
+  profileImg: document.querySelector('#profileImage img'),
+  currentPos: document.getElementById('currentPosition'),
+  nextDownArrow: document.getElementById('nextDownArrow'),
+  containerTyping: document.querySelector('.container-typing'),
+  menuIconSpan: document.querySelector('#navBar #menuButton #menuIconSpan'),
+};
 
-$(window).resize(() => {
-  let deviceWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;
-  if (deviceWidth <= 700) {
-    $('#navBar li').hide();
+elements.profileImg.classList.add('hover');
+
+const isMobile = () => window.innerWidth <= 700;
+const fadeElement = (target, opacity, duration = 0.3) => {
+  return gsap.to(target, {
+    opacity,
+    duration,
+    ease: 'power2.inOut',
+  });
+};
+
+const fadeElementWithDisplay = (
+  target,
+  opacity,
+  duration = 0.3,
+  display = 'block'
+) => {
+  const element =
+    typeof target === 'string' ? document.querySelector(target) : target;
+
+  if (opacity === 0) {
+    return gsap.to(target, {
+      opacity: 0,
+      duration,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        if (element) element.style.display = 'none';
+      },
+    });
   } else {
-    $('#navBar li').css('transform', 'scale(1)').fadeIn();
-  }
-  if (navBarExpanded) {
-    $('#navBar li').hide();
-    $('#navBar').animate({ height: '4em' }, 300, () => {
-      navBarExpanded = false;
+    if (element) element.style.display = display;
+    return gsap.to(target, {
+      opacity,
+      duration,
+      ease: 'power2.inOut',
     });
   }
-});
+};
+const animateSection = (
+  selector,
+  translateY,
+  duration = 1,
+  easing = 'elastic.out(1, 0.6)'
+) => {
+  return gsap.to(selector, {
+    transform: `translateY(${translateY})`,
+    duration,
+    ease: easing,
+  });
+};
 
-$('#nextDownArrow').click(() => {
-  goDownArrow();
-});
+const setPosition = (newPos) => {
+  position = newPos;
+  if (newPos !== 'processing') updatePosition(newPos);
+};
 
-$('#projects').click(() => {
-  if (position == 'about') {
-    goDownFromAbout();
-  }
-  if (position == 'experience') {
-    goUpFromExperience();
-  }
-  if (position == 'contact') {
-    fromContactToProjects();
-  }
+const updateNavDisplay = () => {
+  const mobile = isMobile();
+  elements.navLinks.forEach((li) => {
+    li.style.display = mobile ? 'none' : 'block';
+    if (!mobile) li.style.transform = 'scale(1)';
+  });
+};
+
+const collapseNav = () => {
   if (navBarExpanded) {
-    setTimeout(() => {
-      $('#navBar #menuButton #menuIconSpan').click();
-    }, 400);
+    elements.navLinks.forEach((li) => (li.style.display = 'none'));
+    gsap.to(elements.navBar, {
+      height: '4em',
+      duration: 0.5,
+      ease: 'elastic.out(1, 0.7)',
+      onComplete: () => (navBarExpanded = false),
+    });
   }
+};
+
+const updatePosition = (newPos) => {
+  const tl = gsap.timeline();
+  tl.to(elements.currentPos, {
+    opacity: 0,
+    duration: 0.3,
+  })
+    .call(() => {
+      elements.currentPos.textContent = newPos;
+    })
+    .to(elements.currentPos, {
+      opacity: 1,
+      duration: 0.3,
+    });
+  return tl;
+};
+
+const updateNavHover = (activeId) => {
+  document
+    .querySelectorAll('nav li span')
+    .forEach((span) => span.classList.remove('hover'));
+  const activeElement = activeId && document.getElementById(activeId);
+  if (activeElement) activeElement.classList.add('hover');
+};
+
+const toggleProfileImageHover = (add) =>
+  elements.profileImg.classList.toggle('hover', add);
+
+const closeNavIfExpanded = () => {
+  if (navBarExpanded) elements.menuIconSpan.click();
+};
+
+window.addEventListener('resize', () => {
+  updateNavDisplay();
+  collapseNav();
 });
 
-$('#about').click(() => {
-  if (position == 'projects') {
-    goUpFromProjects();
-  }
-  if (position == 'experience') {
-    fromExperienceToAbout();
-  }
-  if (position == 'contact') {
-    fromContactToAbout();
-  }
-  if (navBarExpanded) {
-    setTimeout(() => {
-      $('#navBar #menuButton #menuIconSpan').click();
-    }, 400);
-  }
-});
+elements.nextDownArrow.addEventListener('click', goDownArrow);
 
-$('#experience').click(() => {
-  if (position == 'projects') {
-    goDownFromProjects();
-  }
-  if (position == 'about') {
-    fromAboutToExperience();
-  }
-  if (position == 'contact') {
-    goUpFromContact();
-  }
-  if (navBarExpanded) {
-    setTimeout(() => {
-      $('#navBar #menuButton #menuIconSpan').click();
-    }, 400);
-  }
-});
-
-$('#contact').click(() => {
-  if (position == 'about') {
-    fromAboutToContact();
-  }
-  if (position == 'experience') {
-    goDownFromExperience();
-  }
-  if (position == 'projects') {
-    fromProjectsToContact();
-  }
-  if (navBarExpanded) {
-    setTimeout(() => {
-      $('#navBar #menuButton #menuIconSpan').click();
-    }, 400);
-  }
-});
-
-let isMoving = false;
-document.querySelector('body').onwheel = movePage;
+document.body.onwheel = movePage;
 document.onkeydown = movePage;
 
 function movePage(event) {
   if (isMoving) return;
   isMoving = true;
-  let move = event.deltaY || null;
-  let keyPressed = event.keyCode || null;
-  if (move > 0 || keyPressed === 40) {
-    console.log('move down');
-    if (position == 'main') goDownArrow();
-    if (position == 'about') goDownFromAbout();
-    if (position == 'projects') goDownFromProjects();
-    if (position == 'experience') goDownFromExperience();
-  } else if (move < 0 || keyPressed === 38) {
-    console.log('move up');
-    if (position == 'about') goUpArrow();
-    if (position == 'projects') goUpFromProjects();
-    if (position == 'experience') goUpFromExperience();
-    if (position == 'contact') goUpFromContact();
-  } else if (keyPressed === 37) {
-    if (position == 'experience' && skillsShowed) goToGSOC();
-    if (position == 'projects') $('#previousProject svg').click();
+
+  const { deltaY: move, keyCode: keyPressed } = event;
+  const downActions = {
+    main: goDownArrow,
+    about: goDownFromAbout,
+    projects: goDownFromProjects,
+    experience: goDownFromExperience,
+  };
+  const upActions = {
+    about: goUpArrow,
+    projects: goUpFromProjects,
+    experience: goUpFromExperience,
+    contact: goUpFromContact,
+  };
+
+  if (move > 0 || keyPressed === 40) downActions[position]?.();
+  else if (move < 0 || keyPressed === 38) upActions[position]?.();
+  else if (keyPressed === 37) {
+    if (position === 'projects')
+      document
+        .querySelector('#previousProject svg')
+        ?.dispatchEvent(new Event('click', { bubbles: true }));
+    if (position === 'experience')
+      document
+        .querySelector('#previousExperience svg')
+        ?.dispatchEvent(new Event('click', { bubbles: true }));
   } else if (keyPressed === 39) {
-    if (position == 'projects') $('#nextProject').click();
-    if (position == 'experience' && !skillsShowed) goToSkills();
+    if (position === 'projects')
+      document.getElementById('nextProject')?.click();
+    if (position === 'experience')
+      document.getElementById('nextExperience')?.click();
   }
-  move = keyPressed = null;
-  setTimeout(() => { isMoving = false; }, 2000);
+
+  setTimeout(() => (isMoving = false), 2000);
 }
 
 function goDownArrow() {
   position = 'processing';
-  let deviceWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;
-  if (deviceWidth <= 700) $('#navBar li').hide();
-  if (deviceWidth > 700) $('#navBar li').show();
-  $('#nextDownArrow').fadeOut();
-  // $('.about').css('display', 'flex');
-  anime({
-    targets: '.container-typing',
-    translateY: '-100%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      anime({
-        targets: '#navBar li',
-        scale: '1.3',
-        duration: 200,
-        direction: 'alternate',
-        easing: 'easeInOutSine',
-        complete: function () {
-          lazyLoadProfileImage();
-          if (!profileImageLoaded) {
-            lazyLoadProfileImage().then(() => {
-              $('#profileImage img').removeClass('hover');
-            });
-          } else {
-            $('#profileImage img').removeClass('hover');
-          }
-          $('#about').addClass('hover');
-          $('body').css('overscroll-behavior', 'none');
-          // $('.container-typing').hide();
-          $('nav li span').removeClass('hover');
-          $('#about').addClass('hover');
-          position = 'about';
-          $('#navBar').fadeIn();
-        },
-      });
-    },
-  });
-  anime({
-    targets: '.about',
-    translateY: '-100%',
-    duration: 1000,
-    easing: 'easeOutElastic(1, 0.6)',
-    complete: function () {},
+  updateNavDisplay();
+  fadeElementWithDisplay('#nextDownArrowContainer', 0);
+  document.getElementById('themeToggle')?.classList.add('normal');
+  
+  elements.navBar.style.display = 'block';
+  elements.navBar.style.opacity = '0';
+  fadeElement('#navBar', 1, 0.8);
+  
+  animateSection('.container-typing', '-100%', 0.4, 'power2.inOut');
+  const aboutAnimation = animateSection('.about', '-100%');
+  aboutAnimation.eventCallback('onComplete', () => {
+    if (!profileImageLoaded)
+      lazyLoadProfileImage().then(() => toggleProfileImageHover(false));
+    else toggleProfileImageHover(false);
+    updateNavHover('about');
+    document.body.style.overscrollBehavior = 'none';
+    position = 'about';
   });
 }
 
 function goUpArrow() {
   position = 'processing';
-  $('#navBar').fadeOut();
-  $('.container-typing').show();
-  $('#about').removeClass('hover');
-  if (navBarExpanded) $('#navBar #menuButton #menuIconSpan').click();
-  anime({
-    targets: '.about',
-    translateY: '100%',
-    duration: 1100,
-    // easing: 'easeInOutSine',
-    complete: function () {
-      $('#nextDownArrow').fadeIn();
+  const navFade = fadeElement('#navBar', 0, 0.3);
+  navFade.eventCallback('onComplete', () => {
+    elements.navBar.style.display = 'none';
+  });
+  elements.containerTyping.style.display = 'flex';
+  updateNavHover('');
+  if (navBarExpanded) elements.menuIconSpan.click();
+  document.getElementById('themeToggle')?.classList.remove('normal');
+  animateSection('.about', 'calc(100% + 6em)', 1.1);
+  gsap.to('.container-typing', {
+    transform: 'translateY(0%)',
+    duration: 1.1,
+    ease: 'elastic.out(1, 0.6)',
+    onComplete: () => {
+      fadeElementWithDisplay('#nextDownArrowContainer', 1, 0.3, 'flex');
       position = 'main';
-      $('#profileImage img').addClass('hover');
+      toggleProfileImageHover(true);
     },
   });
-  anime({
-    targets: '.container-typing',
-    translateY: '0%',
-    duration: 1100,
-  });
-  $('body').css('overscroll-behavior', 'auto');
+  document.body.style.overscrollBehavior = 'auto';
 }
 
-let nextProjectArrowAnimation = null;
-function goDownFromAbout() {
+const sectionTransition = (toPosition, navId, profileHover, callback) => {
   position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Projects').fadeIn();
-  });
-  anime({
-    targets: '.about',
-    translateY: 'calc(-200% - 6em)',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').addClass('hover');
-    },
-  });
-  movingNextProjectArrow();
-  $('nav li span').removeClass('hover');
-  $('#projects').addClass('hover');
-}
-
-function movingNextProjectArrow() {
-  anime({
-    targets: '.projects',
-    translateY: '-200%',
-    duration: 1000,
-    // delay: 50,
-    // easing: 'easeOutElastic(1, 0.5)',
-    complete: function () {
-      position = 'projects';
-      if (currentProject == 1) {
-        nextProjectArrowAnimation = anime({
-          targets: '#nextProject',
-          translateX: '0.7em',
-          duration: 800,
-          direction: 'alternate',
-          loop: true,
-          easing: 'easeInOutSine',
-        });
-      }
-    },
-  });
-}
-
-function goUpFromProjects() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('About').fadeIn();
-  });
-  anime({
-    targets: '.projects',
-    translateY: '0%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').removeClass('hover');
-    },
-  });
-  anime({
-    targets: '.about',
-    translateY: ['calc(-200% - 6em)', '-100%'],
-    duration: 1000,
-    // direction: 'reverse',
-    complete: function () {
-      position = 'about';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#about').addClass('hover');
-}
-
-let skillsLoaded = false;
-function goDownFromProjects() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Experience').fadeIn();
-  });
-  anime({
-    targets: '.projects',
-    translateY: 'calc(-300% - 6em)',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {},
-  });
-  anime({
-    targets: '.experience',
-    translateY: '-300%',
-    duration: 1000,
-    // delay: 50,
-    // easing: 'easeOutElastic(1, 0.5)',
-    complete: function () {
-      position = 'experience';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#experience').addClass('hover');
-  if (!skillsLoaded) {
-    fetch('./assets/svgData')
-      .then((res) => res.blob())
-      .then((blob) => {
-        let f = new FileReader();
-        f.onload = function (e) {
-          $('#skills').html(e.target.result);
-          skillsLoaded = true;
-        };
-        f.readAsText(blob);
-      });
+  updatePosition(toPosition);
+  if (profileHover !== null)
+    setTimeout(() => toggleProfileImageHover(profileHover), 400);
+  updateNavHover(navId);
+  const themeToggle = document.getElementById('themeToggle');
+  if (toPosition === 'main') {
+    themeToggle?.classList.remove('normal');
+  } else {
+    themeToggle?.classList.add('normal');
   }
-}
+  
+  callback?.();
+};
 
-function goUpFromExperience() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Projects').fadeIn();
+const goDownFromAbout = () =>
+  sectionTransition('projects', 'projects', false, () => {
+    animateSection('.about', 'calc(-200% - 6em)', 0.4, 'power2.inOut');
+    movingNextProjectArrow();
   });
-  anime({
-    targets: '.experience',
-    translateY: '0%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {},
-  });
-  anime({
-    targets: '.projects',
-    translateY: ['calc(-300% - 6em)', '-200%'],
-    duration: 1000,
-    // direction: 'reverse',
-    complete: function () {
-      position = 'projects';
-    },
-  });
-  movingNextProjectArrow();
-  $('nav li span').removeClass('hover');
-  $('#projects').addClass('hover');
-}
 
-function fromAboutToExperience() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Experience').fadeIn();
-  });
-  anime({
-    targets: '.about',
-    translateY: 'calc(-200% - 6em)',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').addClass('hover');
-    },
-  });
-  anime({
-    targets: '.experience',
-    translateY: '-300%',
-    duration: 1000,
-    // delay: 50,
-    // easing: 'easeOutElastic(1, 0.5)',
-    complete: function () {
-      position = 'experience';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#experience').addClass('hover');
-  if (!skillsLoaded) {
-    fetch('./assets/svgData')
-      .then((res) => res.blob())
-      .then((blob) => {
-        let f = new FileReader();
-        f.onload = function (e) {
-          $('#skills').html(e.target.result);
-          skillsLoaded = true;
-        };
-        f.readAsText(blob);
+const movingNextProjectArrow = () => {
+  const projectsAnimation = animateSection('.projects', '-200%', 1);
+  projectsAnimation.eventCallback('onComplete', () => {
+    position = 'projects';
+    if (currentProject === 1) {
+      nextProjectArrowAnimation = gsap.to('#nextProject', {
+        transform: 'translateX(0.7em)',
+        duration: 0.8,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
       });
-  }
-}
+    }
+  });
+};
 
-function fromExperienceToAbout() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('About').fadeIn();
+const goUpFromProjects = () =>
+  sectionTransition('about', 'about', false, () => {
+    animateSection('.projects', '0%', 0.4, 'power2.inOut');
+    gsap.to('.about', {
+      transform: 'translateY(-100%)',
+      duration: 1,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => (position = 'about'),
+    });
   });
-  anime({
-    targets: '.experience',
-    translateY: '0%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').removeClass('hover');
-    },
-  });
-  anime({
-    targets: '.about',
-    translateY: ['calc(-200% - 6em)', '-100%'],
-    duration: 1000,
-    // direction: 'reverse',
-    complete: function () {
-      position = 'about';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#about').addClass('hover');
-}
 
-function goDownFromExperience() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Contact').fadeIn();
-  });
-  anime({
-    targets: '.experience',
-    translateY: 'calc(-400% - 6em)',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {},
-  });
-  anime({
-    targets: '.contact',
-    translateY: '-400%',
-    duration: 1000,
-    // delay: 50,
-    // easing: 'easeOutElastic(1, 0.5)',
-    complete: function () {
-      position = 'contact';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#contact').addClass('hover');
-}
-
-function goUpFromContact() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Experience').fadeIn();
-  });
-  anime({
-    targets: '.contact',
-    translateY: '0%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {},
-  });
-  anime({
-    targets: '.experience',
-    translateY: ['calc(-400% - 6em)', '-300%'],
-    duration: 1000,
-    // direction: 'reverse',
-    complete: function () {
+const goDownFromProjects = () =>
+  sectionTransition('experience', 'experience', null, () => {
+    animateSection('.projects', 'calc(-300% - 6em)', 0.4, 'power2.inOut');
+    const experienceAnimation = animateSection('.experience', '-300%', 1);
+    experienceAnimation.eventCallback('onComplete', () => {
       position = 'experience';
-    },
+      movingNextExperienceArrow();
+    });
   });
-  $('nav li span').removeClass('hover');
-  $('#experience').addClass('hover');
-  if (!skillsLoaded) {
-    fetch('./assets/svgData')
-      .then((res) => res.blob())
-      .then((blob) => {
-        let f = new FileReader();
-        f.onload = function (e) {
-          $('#skills').html(e.target.result);
-          skillsLoaded = true;
-        };
-        f.readAsText(blob);
-      });
-  }
-}
 
-function fromAboutToContact() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Contact').fadeIn();
+const goUpFromExperience = () =>
+  sectionTransition('projects', 'projects', null, () => {
+    animateSection('.experience', '0%', 0.4, 'power2.inOut');
+    gsap.to('.projects', {
+      transform: 'translateY(-200%)',
+      duration: 1,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => (position = 'projects'),
+    });
+    movingNextProjectArrow();
   });
-  anime({
-    targets: '.about',
-    translateY: 'calc(-200% - 6em)',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').addClass('hover');
-    },
-  });
-  anime({
-    targets: '.contact',
-    translateY: '-400%',
-    duration: 1000,
-    // delay: 50,
-    // easing: 'easeOutElastic(1, 0.5)',
-    complete: function () {
-      position = 'contact';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#contact').addClass('hover');
-}
 
-function fromContactToAbout() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('About').fadeIn();
+const fromAboutToExperience = () =>
+  sectionTransition('experience', 'experience', true, () => {
+    animateSection('.about', 'calc(-200% - 6em)', 0.4, 'power2.inOut');
+    animateSection('.projects', 'calc(-300% - 6em)', 0, 'power2.inOut');
+    const experienceAnimation = animateSection('.experience', '-300%', 1);
+    experienceAnimation.eventCallback('onComplete', () => {
+      position = 'experience';
+      movingNextExperienceArrow();
+    });
   });
-  anime({
-    targets: '.contact',
-    translateY: '0%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').removeClass('hover');
-    },
-  });
-  anime({
-    targets: '.about',
-    translateY: ['calc(-200% - 6em)', '-100%'],
-    duration: 1000,
-    // direction: 'reverse',
-    complete: function () {
-      position = 'about';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#about').addClass('hover');
-}
 
-function fromContactToProjects() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Projects').fadeIn();
+const fromExperienceToAbout = () =>
+  sectionTransition('about', 'about', false, () => {
+    animateSection('.experience', '0%', 0.4, 'power2.inOut');
+    animateSection('.projects', '0%', 0, 'power2.inOut');
+    gsap.to('.about', {
+      transform: 'translateY(-100%)',
+      duration: 1,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => (position = 'about'),
+    });
   });
-  anime({
-    targets: '.contact',
-    translateY: '0%',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {
-      $('#profileImage img').removeClass('hover');
-    },
-  });
-  anime({
-    targets: '.projects',
-    translateY: ['calc(-300% - 6em)', '-200%'],
-    duration: 1000,
-    // direction: 'reverse',
-    complete: function () {
-      position = 'projects';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#Projects').addClass('hover');
-}
 
-function fromProjectsToContact() {
-  position = 'processing';
-  $('#currentPosition').fadeOut(function () {
-    $(this).text('Contact').fadeIn();
+const goDownFromExperience = () =>
+  sectionTransition('contact', 'contact', null, () => {
+    animateSection('.experience', 'calc(-400% - 6em)', 0.4, 'power2.inOut');
+    animateSection('.contact', '-400%', 1);
+    setTimeout(() => (position = 'contact'), 1000);
   });
-  anime({
-    targets: '.projects',
-    translateY: 'calc(-300% - 6em)',
-    duration: 400,
-    easing: 'easeInOutQuad',
-    complete: function () {},
-  });
-  anime({
-    targets: '.contact',
-    translateY: '-400%',
-    duration: 1000,
-    // delay: 50,
-    // easing: 'easeOutElastic(1, 0.5)',
-    complete: function () {
-      position = 'contact';
-    },
-  });
-  $('nav li span').removeClass('hover');
-  $('#contact').addClass('hover');
-}
 
-$('#navBar #menuButton #menuIconSpan').click(() => {
+const goUpFromContact = () =>
+  sectionTransition('experience', 'experience', null, () => {
+    animateSection('.contact', '0%', 0.4, 'power2.inOut');
+    gsap.to('.experience', {
+      transform: 'translateY(-300%)',
+      duration: 1,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => {
+        position = 'experience';
+        movingNextExperienceArrow();
+      },
+    });
+  });
+
+const fromAboutToContact = () =>
+  sectionTransition('contact', 'contact', true, () => {
+    animateSection('.about', 'calc(-200% - 6em)', 0.4, 'power2.inOut');
+    animateSection('.projects', 'calc(-300% - 6em)', 0, 'power2.inOut');
+    animateSection('.experience', 'calc(-400% - 6em)', 0, 'power2.inOut');
+    animateSection('.contact', '-400%', 1);
+    setTimeout(() => (position = 'contact'), 1000);
+  });
+
+const fromContactToAbout = () =>
+  sectionTransition('about', 'about', false, () => {
+    animateSection('.contact', '0%', 0.4, 'power2.inOut');
+    animateSection('.experience', '0%', 0, 'power2.inOut');
+    animateSection('.projects', '0%', 0, 'power2.inOut');
+    gsap.to('.about', {
+      transform: 'translateY(-100%)',
+      duration: 1,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => (position = 'about'),
+    });
+  });
+
+const fromContactToProjects = () =>
+  sectionTransition('projects', 'projects', false, () => {
+    animateSection('.contact', '0%', 0.4, 'power2.inOut');
+    animateSection('.experience', '0%', 0, 'power2.inOut');
+    gsap.to('.projects', {
+      transform: 'translateY(-200%)',
+      duration: 1,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => (position = 'projects'),
+    });
+  });
+
+const fromProjectsToContact = () =>
+  sectionTransition('contact', 'contact', null, () => {
+    animateSection('.projects', 'calc(-300% - 6em)', 0.4, 'power2.inOut');
+    animateSection('.experience', 'calc(-400% - 6em)', 0, 'power2.inOut');
+    animateSection('.contact', '-400%', 1);
+    setTimeout(() => (position = 'contact'), 1000);
+  });
+
+const navigationRoutes = {
+  projects: {
+    about: goDownFromAbout,
+    experience: goUpFromExperience,
+    contact: fromContactToProjects,
+  },
+  about: {
+    projects: goUpFromProjects,
+    experience: fromExperienceToAbout,
+    contact: fromContactToAbout,
+  },
+  experience: {
+    projects: goDownFromProjects,
+    about: fromAboutToExperience,
+    contact: goUpFromContact,
+  },
+  contact: {
+    about: fromAboutToContact,
+    experience: goDownFromExperience,
+    projects: fromProjectsToContact,
+  },
+};
+
+['projects', 'about', 'experience', 'contact'].forEach((section) => {
+  document.getElementById(section).addEventListener('click', () => {
+    navigationRoutes[section]?.[position]?.();
+    closeNavIfExpanded();
+  });
+});
+
+elements.menuIconSpan.addEventListener('click', () => {
+  const menuButton = document.getElementById('menuButton');
   if (!navBarExpanded) {
-    $('#navBar').animate({ height: '20em' }, 300, () => {
-      navBarExpanded = true;
-      $('#navBar li').fadeIn();
+    elements.navLinks.forEach((li) => {
+      li.style.display = 'block';
+      gsap.set(li, { opacity: 0 });
     });
-    $('#navBar').css('backdrop-filter', 'blur(8px)');
-    $('#navBar').css('-webkit-backdrop-filter', 'blur(8px)');
-    $('#menuButton svg.feather.feather-menu').replaceWith(
-      feather.icons.x.toSvg()
-    );
-    anime({
-      targets: '#menuButton #menuIconSpan svg',
-      rotate: '90deg',
-      duration: 700,
+
+    gsap.to(elements.navBar, {
+      height: '20em',
+      duration: 0.8,
+      ease: 'elastic.out(1, 0.6)',
+      onComplete: () => (navBarExpanded = true),
+    });
+
+    elements.navLinks.forEach((li, index) => {
+      gsap.to(li, {
+        opacity: 1,
+        duration: 0.4,
+        delay: 0.1 + index * 0.1,
+        ease: 'power2.out',
+      });
+    });
+
+    elements.navBar.style.backdropFilter = 'blur(8px)';
+    elements.navBar.style.webkitBackdropFilter = 'blur(8px)';
+
+    const menuIcon = menuButton.querySelector('svg.feather.feather-menu');
+    if (menuIcon) menuIcon.outerHTML = feather.icons.x.toSvg();
+
+    gsap.to('#menuButton #menuIconSpan svg', {
+      rotation: 90,
+      duration: 0.8,
+      ease: 'elastic.out(1, 0.6)',
     });
   } else {
-    $('#navBar li').hide();
-    $('#navBar').animate({ height: '4em' }, 300, () => {
-      navBarExpanded = false;
-      $('#navBar').css('backdrop-filter', 'blur(3px)');
-      $('#navBar').css('-webkit-backdrop-filter', 'blur(3px)');
+    elements.navLinks.forEach((li) => (li.style.display = 'none'));
+    gsap.to(elements.navBar, {
+      height: '4em',
+      duration: 0.5,
+      ease: 'elastic.out(1, 0.7)',
+      onComplete: () => {
+        navBarExpanded = false;
+        elements.navBar.style.backdropFilter = 'blur(3px)';
+        elements.navBar.style.webkitBackdropFilter = 'blur(3px)';
+      },
     });
-    $('#menuButton svg.feather.feather-x').replaceWith(
-      feather.icons.menu.toSvg()
+
+    const xIcon = menuButton.querySelector('svg.feather.feather-x');
+    if (xIcon) xIcon.outerHTML = feather.icons.menu.toSvg();
+
+    const iconSpan = document.querySelector('#menuButton #menuIconSpan svg');
+    gsap.set(iconSpan, { rotation: 90 });
+    gsap.to('#menuButton #menuIconSpan svg', {
+      rotation: 0,
+      duration: 0.8,
+      ease: 'elastic.out(1, 0.6)',
+    });
+  }
+});
+
+const projectData = {
+  names: [
+    'Pathology Algorithm Development Workbench',
+    'virtual-bg',
+    'Peerivate',
+    'This Website',
+  ],
+  descriptions: [
+    'Selected as one of 1,200 students worldwide for Google Summer of Code 2020 to develop a Pathology Algorithm Development Workbench for caMicroscope. Enabled users to train their own ML models using an interactive UI, choose training data from pre-existing caMicroscope data or custom datasets, with an interactive interface for designing algorithms from scratch using TensorFlow.js for real-time machine learning model training and deployment.',
+    'Developed and maintained an open-source npm package with over 20,000 total downloads, providing seamless virtual background effects for video/camera input within web browsers using MediaPipe for real-time person segmentation. Features include customizable background images, blur effects, edge smoothing, and optimized performance for real-time video processing, supporting multiple frameworks and demonstrating scalability in production environments.',
+    'Architected and developed a fully custom, end-to-end encrypted and anonymous peer-to-peer audio/video calling platform using WebRTC, React, and Node.js with DTLS-SRTP encryption and perfect forward secrecy. Key features include real-time video/audio streaming, screen sharing, presenter mode, automatic connection recovery, and global CDN distribution optimized for low-latency communication.',
+    'A responsive personal portfolio website built with vanilla JavaScript, CSS animations, and modern web technologies. Features include smooth section transitions, touch/swipe navigation, progressive web app capabilities, dark theme support, and optimized performance with service worker caching for an engaging user experience.',
+  ],
+  githubStatus: [false, true, true, true],
+  deployStatus: [false, true, true, false],
+  githubLinks: [
+    'https://summerofcode.withgoogle.com/archive/2020/projects/6656365486931968',
+    'https://github.com/akhil-rana/virtual-bg',
+    'https://github.com/akhil-rana/peerivate',
+    'https://github.com/akhil-rana/portfolio',
+  ],
+  deployLinks: [
+    '',
+    'https://demo.virtualbg.akhilrana.com/',
+    'https://peerivate.akhilrana.com/',
+    'https://akhilrana.com/',
+  ],
+};
+
+document.getElementById('nextProject').addEventListener('click', () => {
+  if (currentProject < projectData.names.length + 1) goToNextProject();
+});
+document.getElementById('previousProject').addEventListener('click', () => {
+  if (currentProject > 1) goToPreviousProject();
+});
+
+const updateProjectContent = (
+  name,
+  description,
+  githubLink,
+  deployLink,
+  showDeploy,
+  isGithubRepo = true
+) => {
+  const elements = {
+    name: document.getElementById('projectName'),
+    description: document.getElementById('projectDescription'),
+    github: document.getElementById('projectGithub'),
+    deployment: document.getElementById('projectDeployment'),
+  };
+
+  const fadeOut = fadeElement(Object.values(elements), 0, 0.4);
+  fadeOut.eventCallback('onComplete', () => {
+    elements.name.textContent = name;
+    elements.description.textContent = description;
+    elements.github.href = githubLink;
+    elements.deployment.style.display = showDeploy ? 'inline-block' : 'none';
+    if (showDeploy) elements.deployment.href = deployLink;
+
+    if (isGithubRepo) {
+      elements.github.innerHTML = '<i data-feather="github"></i>';
+      elements.github.setAttribute('aria-label', 'Github Icon');
+    } else {
+      elements.github.innerHTML = '<i data-feather="external-link"></i>';
+      elements.github.setAttribute('aria-label', 'Project link');
+    }
+
+    if (typeof feather !== 'undefined') feather.replace();
+    fadeElement(Object.values(elements), 1, 0.4);
+  });
+};
+
+const updateProjectNavigation = () => {
+  const prevEl = document.getElementById('previousProject');
+  const nextEl = document.getElementById('nextProject');
+  prevEl.style.display = currentProject > 1 ? 'block' : 'none';
+  nextEl.style.display =
+    currentProject < projectData.names.length ? 'block' : 'none';
+};
+
+const goToNextProject = () => {
+  const nextEl = document.getElementById('nextProject');
+  if (currentProject === 1 && nextProjectArrowAnimation) {
+    nextProjectArrowAnimation.progress(0);
+    gsap.killTweensOf('#nextProject');
+    gsap.set('#nextProject', { transform: 'translateX(0)' });
+  }
+
+  if (currentProject === projectData.names.length) {
+    updateProjectContent(
+      'You might find some more on my github account :)',
+      '',
+      'https://github.com/akhil-rana/',
+      '',
+      false,
+      false
     );
-    $('#menuButton #menuIconSpan svg').css('transform', 'rotate(90deg)');
-    anime({
-      targets: '#menuButton #menuIconSpan svg',
-      rotate: '0deg',
-      duration: 700,
-    });
+    nextEl.style.display = 'none';
+    currentProject++;
+  } else if (currentProject < projectData.names.length) {
+    const project = projectData.names[currentProject];
+    updateProjectContent(
+      project,
+      projectData.descriptions[currentProject],
+      projectData.githubLinks[currentProject],
+      projectData.deployLinks[currentProject],
+      projectData.deployStatus[currentProject],
+      projectData.githubStatus[currentProject]
+    );
+    currentProject++;
+    updateProjectNavigation();
   }
-});
+};
 
-let currentProject = 1;
-let projectNames = [
-  'Virtual-BG',
-  'Peerivate',
-  'YT-Downloader-Backend',
-  'YT-Downloader',
-  'WebSight',
-  'WebSight-Backend',
-  'Google Search Scraper',
-  'D-Learn',
-  'Angular-to-do',
-  'And this Website',
-];
-let projectDescriptions = [
-  'Easily add virtual background effects to your video/camera input inside any web browser using this package with over 6000 downloads on npm',
-  'A fully anonymous private peer to peer audio/video calls solution based on WebRTC. Built on top of react and tailwind with modern structure in mind',
-  'A nodeJS utility for downloading YouTube videos using ytdl-core and fluent-ffmpeg with support for splitting and downloading chunk files from YouTube servers for more speed.',
-  'The frontend for the (YT-Downloader-backend) made using basic HTML, jQuery, Bootstrap',
-  'Allowing visually and physically impaired individuals to perform certain web-tasks with ease without need of any personalized software/hardware all within a web browser. Used native web-speech API to perform all these tasks using only voice commands.',
-  'The nodeJS consolidated backend for WebSight which is responsible for scraping web sites like google.com, news.google.com, wikipedia etc. Used for google translate functionality too.',
-  'A really simple NodeJS project to scrape search results from google.com and return them in JSON format using Puppeteer and Cheerio.',
-  'A simple design based implementation for a distance learning android app. Implemented various features like course completion status, YouTube API support, WebView integration, Login/signup functionality, user profile update, password reset and Admin dashboard etc.',
-  'A simple frontend To-do list made using material-angular with dark theme support and ready for Heroku deployment.',
-  'A simple yet beautiful personal portfolio website with dark theme support made without using any frontend libraries. Everything implemented with core CSS, JS, jQuery etc.',
-];
-
-let projectsDeployStatus = [
-  true,
-  true,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-];
-let projectsGithubLinks = [
-  'https://github.com/akhil-rana/virtual-bg',
-  'https://github.com/akhil-rana/peerivate',
-  'https://github.com/akhil-rana/YT-Downloader-Backend',
-  'https://github.com/akhil-rana/YT-Downloader',
-  'https://github.com/akhil-rana/WebSight',
-  'https://github.com/akhil-rana/WebSight-backend',
-  'https://github.com/akhil-rana/Google-Scrape-NodeJS',
-  'https://github.com/akhil-rana/D-Learn',
-  'https://github.com/akhil-rana/Angular-to-do',
-  'https://github.com/akhil-rana/portfolio',
-];
-let projectsDeployLinks = [
-  'https://demo.virtualbg.akhilrana.com/',
-  'https://peerivate.akhilrana.com/',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-];
-
-function projectSwitchEvents() {
-  $('#nextProject').click(() => {
-    if (currentProject < projectNames.length + 1) goToNextProject();
-  });
-  $('#previousProject').click(() => {
-    if (currentProject > 1) goToPreviousProject();
-  });
-}
-projectSwitchEvents();
-
-function goToNextProject() {
-  $('#nextProject, #previousProject').unbind('click');
-  if (currentProject == 1) {
-    $('#nextProject').fadeOut(function () {
-      $(this).fadeIn();
-      $(this).css('opacity', '0');
-      nextProjectArrowAnimation.seek(0);
-      anime.remove('#nextProject');
-      $(this).css('transform', 'translateX(0)').css('opacity', '1');
-    });
+const goToPreviousProject = () => {
+  if (currentProject > 1) {
+    currentProject--;
+    const project = projectData.names[currentProject - 1];
+    updateProjectContent(
+      project,
+      projectData.descriptions[currentProject - 1],
+      projectData.githubLinks[currentProject - 1],
+      projectData.deployLinks[currentProject - 1],
+      projectData.deployStatus[currentProject - 1],
+      projectData.githubStatus[currentProject - 1]
+    );
+    updateProjectNavigation();
   }
-  if (currentProject == projectNames.length) {
-    $('#projectName').fadeOut(function () {
-      $(this).text('You might find some more on my github account :)').fadeIn();
-      $('#projectGithub').attr('href', 'https://github.com/akhil-rana/');
-      $('#previousProject svg').click(() => {
-        if (currentProject > 1) goToPreviousProject();
+};
+
+const createToggleFunction = (
+  showCondition,
+  hideElements,
+  showElements,
+  getDisplay
+) => {
+  gsap.to(hideElements, {
+    opacity: 0,
+    duration: 0.25,
+    ease: 'power2.inOut',
+    onComplete: () => {
+      hideElements.forEach((el) => (el.style.display = 'none'));
+      showElements.forEach((el, index) => {
+        el.style.display = getDisplay ? getDisplay(el, index) : 'block';
+        el.style.opacity = '0';
       });
-      currentProject++;
-    });
-    $('#projectDeployment').fadeOut();
-    $('#nextProject').fadeOut();
-    $('#projectDescription').fadeOut(function () {
-      $(this).text('').fadeIn();
-    });
-  } else {
-    $('#previousProject').fadeIn();
-    $('#projectName').fadeOut(function () {
-      $(this).text(projectNames[currentProject]).fadeIn();
-    });
-    $('#projectDescription').fadeOut(function () {
-      $(this).text(projectDescriptions[currentProject]).fadeIn();
-      if (projectsDeployStatus[currentProject])
-        $('#projectDeployment')
-          .fadeIn()
-          .attr('href', projectsDeployLinks[currentProject]);
-      else $('#projectDeployment').fadeOut();
-      $('#projectGithub').attr('href', projectsGithubLinks[currentProject]);
-      currentProject++;
-      projectSwitchEvents();
-    });
-  }
-}
-
-function goToPreviousProject() {
-  $('#previousProject, #nextProject').unbind('click');
-  if (currentProject < 3) {
-    $('#previousProject').fadeOut();
-  }
-  $('#projectName').fadeOut(function () {
-    $(this)
-      .text(projectNames[currentProject - 2])
-      .fadeIn();
+      setTimeout(
+        () =>
+          gsap.to(showElements, {
+            opacity: 1,
+            duration: 0.35,
+            ease: 'power2.inOut',
+          }),
+        50
+      );
+      showCondition?.();
+    },
   });
-  $('#projectDescription').fadeOut(function () {
-    if (projectsDeployStatus[currentProject - 2])
-      $('#projectDeployment')
-        .fadeIn()
-        .attr('href', projectsDeployLinks[currentProject - 2]);
-    else $('#projectDeployment').fadeOut();
-    $('#projectGithub').attr('href', projectsGithubLinks[currentProject - 2]);
-    $(this)
-      .text(projectDescriptions[currentProject - 2])
-      .fadeIn(function () {
-        currentProject--;
-        projectSwitchEvents();
-      });
-  });
-  $('#nextProject').fadeIn();
-}
+};
 
-let skillsShowed = false;
-$('#goToSkills').click(() => {
-  goToSkills();
-});
-$('#goToGSOC').click(() => {
-  goToGSOC();
-});
-
-function goToSkills() {
-  $('#gsocIcon').fadeOut();
-  $('#experienceDescription').fadeOut(function () {
-    $('#skills').fadeIn();
-    $('#skillsHeading').fadeIn();
-    $('#goToGSOC').fadeIn();
-    $('#goToSkills').fadeOut();
-    skillsShowed = true;
-  });
-}
-function goToGSOC() {
-  $('#skillsHeading').fadeOut();
-  $('#skills').fadeOut(function () {
-    $('#gsocIcon').fadeIn();
-    $('#experienceDescription').fadeIn();
-    $('#goToGSOC').fadeOut();
-    $('#goToSkills').fadeIn();
-    skillsShowed = false;
-  });
-}
-
-let profileImageLoaded = false;
 function lazyLoadProfileImage() {
-  return new Promise((resolve, reject) => {
-    fetch('https://i.ibb.co/0cz3z8W/me.jpg')
+  return new Promise((resolve) => {
+    fetch('https://ik.imagekit.io/at6kwvrzots/me_m8TQcP9Y8.webp')
       .then((res) => res.blob())
       .then((blob) => {
-        let urlCreator = window.URL || window.webkitURL;
-        let imageUrl = urlCreator.createObjectURL(blob);
-        $('#profileImage img').attr('src', imageUrl);
+        const urlCreator = window.URL || window.webkitURL;
+        const imageUrl = urlCreator.createObjectURL(blob);
+        elements.profileImg.src = imageUrl;
         profileImageLoaded = true;
-        $('#ImageLoading').fadeOut();
+
+        const imageLoading = document.getElementById('ImageLoading');
+        gsap.to(imageLoading, {
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => (imageLoading.style.display = 'none'),
+        });
         resolve();
       });
   });
 }
 
-function sendMail() {
-  let myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
-
-  let data = JSON.stringify({
-    name: $('#nameOfSender').val(),
-    email: $('#emailOfSender').val(),
-    message: $('#emailMessage').val(),
+const sendMail = async () => {
+  const data = JSON.stringify({
+    name: document.getElementById('nameOfSender').value,
+    email: document.getElementById('emailOfSender').value,
+    message: document.getElementById('emailMessage').value,
   });
 
-  let requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: data,
-    redirect: 'follow',
+  try {
+    const configResponse = await fetch('./utils/config.json');
+    const config = await configResponse.json();
+
+    const response = await fetch(
+      config.PORTFOLIO_BACKEND_BASE_URL + '/sendMessage',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: data,
+        redirect: 'follow',
+      }
+    );
+
+    const result = await response.text();
+    console.log(result);
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+const toggleContactView = (showSocial) => {
+  const elements = {
+    goToSocial: document.getElementById('goToSocial'),
+    sendMessageBox: document.getElementById('sendMessageBox'),
+    goToMessage: document.getElementById('goToMessage'),
+    socialBox: document.getElementById('socialBox'),
   };
-  fetch('./utils/config.json')
-    .then((response) => response.json())
-    .then((json) => {
-      const base_url = json.PORTFOLIO_BACKEND_BASE_URL;
-      fetch(
-        base_url + '/sendMessage',
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log('error', error));
-    })
-    .catch((error) => console.log('error', error));
-}
 
-let socialShown = false;
-$('#goToSocial').click(() => {
-  goToSocial();
-});
-$('#goToMessage').click(() => {
-  goToMessage();
-});
-function goToSocial() {
-  $('#goToSocial, #sendMessageBox').fadeOut(function () {
-    $('#goToMessage, #socialBox').fadeIn();
-    socialShown = true;
-  });
-}
-function goToMessage() {
-  $('#goToMessage, #socialBox').fadeOut(function () {
-    $('#goToSocial, #sendMessageBox').fadeIn();
-    socialShown = false;
-  });
-}
+  const hideElements = showSocial
+    ? [elements.goToSocial, elements.sendMessageBox]
+    : [elements.goToMessage, elements.socialBox];
+  const showElements = showSocial
+    ? [elements.goToMessage, elements.socialBox]
+    : [elements.goToSocial, elements.sendMessageBox];
+  createToggleFunction(
+    () => (socialShown = showSocial),
+    hideElements,
+    showElements,
+    (el) => {
+      return el.id === 'goToMessage' ? 'flex' : 'block';
+    }
+  );
+};
 
-$('.social-btn').mouseenter(function () {
-  activateSocialLinks();
-});
-$('.social-btn').mouseleave(function () {
-  deactivateSocialLinks();
-});
+document
+  .getElementById('goToSocial')
+  .addEventListener('click', () => toggleContactView(true));
+document
+  .getElementById('goToMessage')
+  .addEventListener('click', () => toggleContactView(false));
 
-function deactivateSocialLinks() {
-  setTimeout(function () {
-    $('.social-btn a').attr('href', '#');
+const socialLinks = {
+  linkedin: 'https://www.linkedin.com/in/rana-akhil/',
+  telegram: 'https://t.me/AkhilRana',
+  medium: 'https://medium.com/@akhilrana0001',
+  github: 'https://github.com/akhil-rana',
+};
+
+const toggleSocialLinks = (activate) => {
+  setTimeout(() => {
+    Object.keys(socialLinks).forEach((platform) => {
+      const link = document.querySelector(`#${platform} a`);
+      if (link) link.href = activate ? socialLinks[platform] : '#';
+    });
   }, 800);
-}
-function activateSocialLinks() {
-  setTimeout(function () {
-    $('#linkedin a').attr('href', 'https://www.linkedin.com/in/rana-akhil/');
-    $('#telegram a').attr('href', 'https://t.me/AkhilRana');
-    $('#medium a').attr('href', 'https://medium.com/@akhilrana0001');
-    $('#github a').attr('href', 'https://github.com/akhil-rana');
-  }, 800);
+};
+
+document.querySelectorAll('.social-btn').forEach((btn) => {
+  btn.addEventListener('mouseenter', () => toggleSocialLinks(true));
+  btn.addEventListener('mouseleave', () => toggleSocialLinks(false));
+});
+
+const experienceData = [
+  {
+    company: '',
+    position: 'Software Engineer - 2',
+    date: 'June 2024 - Present',
+    icon: './assets/company-icons/junper.webp',
+    description:
+      'Maintained and enhanced <a href="https://www.juniper.net/documentation/us/en/software/mist/mist-aiops/topics/topic-map/marvis-client-macos.html" target="_blank" style="text-decoration: none; color: white; border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);">Marvis Client</a> applications for enterprise Wi-Fi environments using SwiftUI and UIKit. Implemented telemetry collection using CoreWLAN frameworks and built automated network onboarding workflows. Developed Marvis-CLI tool for network diagnostics and created silent auto-upgrade mechanisms for BYOD devices.',
+  },
+  {
+    company: '',
+    position: 'Software Engineering Intern',
+    date: 'July 2023 - June 2024',
+    icon: './assets/company-icons/junper.webp',
+    description:
+      'Developed <a href="https://github.com/mistsys/mist-vble-ios-sdk/wiki" target="_blank" style="text-decoration: none; color: white; border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);">Mist Indoor Location SDK</a> sample applications and React Native implementations for cross-platform location services. Focused specifically on indoor positioning and location-based services integration.',
+  },
+  {
+    company: 'SquareBoat',
+    position: 'Software Engineer',
+    date: 'July 2021 - February 2022',
+    icon: './assets/company-icons/squareboat.webp',
+    description:
+      'Led development of production applications using NestJS backend with TypeScript and PostgreSQL/MySQL databases. Redesigned <a href="https://proactiveforher.com" target="_blank" style="text-decoration: none; color: white; border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);">Proactive For Her</a> platform architecture implementing microservices with 3 React-based frontends. Built custom scheduling and payment system reducing SaaS spend by 80%.',
+  },
+  {
+    company: 'GSoC',
+    position: 'Project Developer & Mentor',
+    date: '2020 & 2021',
+    icon: './assets/company-icons/gsoc.webp',
+    description:
+      'Selected as one of 1,200 students worldwide for Google Summer of Code 2020 to develop a <a href="https://summerofcode.withgoogle.com/archive/2020/projects/6656365486931968" target="_blank" style="text-decoration: none; color: white; border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);">Pathology Algorithm Development Workbench</a> for <a href="https://camicroscope.org/" target="_blank" style="text-decoration: none; color: white; border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);">caMicroscope</a>. Later served as project mentor for GSoC 2021, guiding developers in creating a <a href="https://summerofcode.withgoogle.com/archive/2021/projects/6434317655343104" target="_blank" style="text-decoration: none; color: white; border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);">real-time collaborative pathology platform</a>.',
+  },
+];
+
+document.getElementById('nextExperience').addEventListener('click', () => {
+  if (currentExperience < experienceData.length) goToNextExperience();
+});
+document.getElementById('previousExperience').addEventListener('click', () => {
+  if (currentExperience > 1) goToPreviousExperience();
+});
+
+const updateExperienceContent = (experience) => {
+  const elements = {
+    company: document.querySelector('#experienceCompany span'),
+    position: document.getElementById('experiencePosition'),
+    date: document.getElementById('experienceDate'),
+    description: document.getElementById('experienceDescription'),
+    icon: document.querySelector('#experienceCompany img'),
+  };
+
+  const fadeOut = fadeElement(Object.values(elements), 0, 0.4);
+  fadeOut.eventCallback('onComplete', () => {
+    elements.company.textContent = experience.company;
+    elements.company.style.display = experience.company ? 'inline' : 'none';
+    elements.position.textContent = experience.position;
+    elements.date.textContent = experience.date;
+    elements.description.innerHTML = experience.description;
+    elements.icon.src = experience.icon;
+    elements.icon.alt = experience.company || 'Company Logo';
+    fadeElement(Object.values(elements), 1, 0.4);
+  });
+};
+
+const updateExperienceNavigation = () => {
+  const prevEl = document.getElementById('previousExperience');
+  const nextEl = document.getElementById('nextExperience');
+
+  prevEl.style.display = currentExperience > 1 ? 'block' : 'none';
+  nextEl.style.display =
+    currentExperience < experienceData.length ? 'block' : 'none';
+};
+
+const goToNextExperience = () => {
+  const nextEl = document.getElementById('nextExperience');
+  if (currentExperience === 1 && nextExperienceArrowAnimation) {
+    nextExperienceArrowAnimation.progress(0);
+    gsap.killTweensOf('#nextExperience');
+    gsap.set('#nextExperience', { transform: 'translateX(0)' });
+  }
+
+  if (currentExperience < experienceData.length) {
+    updateExperienceContent(experienceData[currentExperience]);
+    currentExperience++;
+    updateExperienceNavigation();
+  }
+};
+
+const goToPreviousExperience = () => {
+  if (currentExperience > 1) {
+    currentExperience--;
+    updateExperienceContent(experienceData[currentExperience - 1]);
+    updateExperienceNavigation();
+  }
+};
+
+const movingNextExperienceArrow = () => {
+  if (currentExperience === 1) {
+    nextExperienceArrowAnimation = gsap.to('#nextExperience', {
+      transform: 'translateX(0.7em)',
+      duration: 0.8,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+    });
+  }
+};
+
+const initializeNextDownArrow = () => {
+  const nextDownArrowContainer = document.getElementById(
+    'nextDownArrowContainer'
+  );
+  if (position === 'main') {
+    nextDownArrowContainer.style.display = 'flex';
+    nextDownArrowContainer.style.opacity = '1';
+  } else {
+    nextDownArrowContainer.style.display = 'none';
+    nextDownArrowContainer.style.opacity = '0';
+  }
+};
+
+const initializeExperienceContent = () => {
+  const firstExperience = experienceData[0];
+
+  updateExperienceContent(firstExperience);
+  updateExperienceNavigation();
+};
+
+const initializeProjectContent = () => {
+  updateProjectContent(
+    projectData.names[0],
+    projectData.descriptions[0],
+    projectData.githubLinks[0],
+    projectData.deployLinks[0],
+    projectData.deployStatus[0],
+    projectData.githubStatus[0]
+  );
+  updateProjectNavigation();
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeNextDownArrow();
+    initializeExperienceContent();
+    initializeProjectContent();
+  });
+} else {
+  initializeNextDownArrow();
+  initializeExperienceContent();
+  initializeProjectContent();
 }

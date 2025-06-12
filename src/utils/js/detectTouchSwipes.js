@@ -7,7 +7,7 @@ let yDown = null;
 function getTouches(evt) {
   return (
     evt.touches || evt.originalEvent.touches // browser API
-  ); // jQuery
+  );
 }
 
 function handleTouchStart(evt) {
@@ -26,18 +26,41 @@ function handleTouchMove(evt) {
 
   let xDiff = xDown - xUp;
   let yDiff = yDown - yUp;
-
   if (Math.abs(xDiff) > Math.abs(yDiff)) {
     /*most significant*/
-    if (xDiff > 0) {
-      /* left swipe */
-      if (position == 'projects') $('#nextProject svg').click();
-      if (position == 'experience' && !skillsShowed) goToSkills();
+    if (xDiff > 0) {      /* left swipe */
+      if (position == 'projects') {
+        const nextProjectSvg = document.querySelector('#nextProject svg');
+        if (nextProjectSvg) {
+          nextProjectSvg.dispatchEvent(new Event('click', { bubbles: true }));
+        }
+      }
+      if (position == 'experience') {
+        const nextExperienceSvg = document.querySelector('#nextExperience svg');
+        if (nextExperienceSvg) {
+          nextExperienceSvg.dispatchEvent(new Event('click', { bubbles: true }));
+        }
+      }
     } else {
       /* right swipe */
-      if (position == 'projects') $('#previousProject svg').click();
-      if (position == 'experience' && skillsShowed) goToGSOC();
-      if (position == 'contact' && socialShown) goToMessage();
+      if (position == 'projects') {
+        const previousProjectSvg = document.querySelector('#previousProject svg');
+        if (previousProjectSvg) {
+          previousProjectSvg.dispatchEvent(new Event('click', { bubbles: true }));
+        }
+      }
+      if (position == 'experience') {
+        const previousExperienceSvg = document.querySelector('#previousExperience svg');
+        if (previousExperienceSvg) {
+          previousExperienceSvg.dispatchEvent(new Event('click', { bubbles: true }));
+        }
+      }
+      if (position == 'contact' && socialShown) {
+        const goToMessageElement = document.getElementById('goToMessage');
+        if (goToMessageElement) {
+          goToMessageElement.click();
+        }
+      }
     }
   } else {
     if (yDiff > 0) {

@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run env-to-config-json && node server.js",
-    "start:dev": "npm run env-to-config-json && NODE_ENV=development PORT=3000 nodemon server.js",
-    "start:prod": "npm run env-to-config-json && NODE_ENV=production node server.js",
+    "start:dev": "npm run env-to-config-json && cross-env NODE_ENV=development PORT=3000 nodemon server.js",
+    "start:prod": "npm run env-to-config-json && cross-env NODE_ENV=production node server.js",
     "build": "npm run env-to-config-json && npm run copy-to-dist && npm run minify-css && npm run minify-js && npm run minify-html",
     "copy-to-dist": "cp -r ./src/ ./dist",
     "minify-css": "find ./dist/ -iname '*.css' -and -not -iname '*.min.css' -exec sh -c 'csso {} --output ${0%.css}.css' {} \\;",
@@ -27,16 +27,17 @@
   "homepage": "https://github.com/akhil-rana/portfolio#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2"
   },
   "engines": {
     "node": ">=19"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "csso-cli": "^4.0.2",
     "html-minifier": "^4.0.0",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.10",
     "uglifyjs-folder": "^3.2.0"
   }
 }

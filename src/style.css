@@ -1,8 +1,23 @@
+:root {
+  --primary-color: white;
+  --secondary-color: rgba(255, 255, 255, 0.9);
+  --tertiary-color: rgba(255, 255, 255, 0.7);
+  --bg-blur: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.555);
+  --border-light: rgba(255, 255, 255, 0.3);
+  --shadow: rgba(0, 0, 0, 0.1);
+  --transition: 0.3s ease;
+  --border-radius: 10px;
+  --font-family: 'Montserrat', sans-serif;
+  --line-height-base: 1.5;
+  --line-height-compact: 1.3;
+  --line-height-tight: 1.1;
+}
+
 body {
-  /* overscroll-behavior: none; */
-  font-family: 'Montserrat', sans-serif;
-  user-select: none; /* supported by Chrome and Opera */
-  -webkit-user-select: none; /* Safari */
+  font-family: var(--font-family);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #content {
@@ -12,70 +27,37 @@ body {
   top: 0;
 }
 
-#nextDownArrowContainer {
-  position: absolute;
-  bottom: 0.2em;
-  text-align: center;
-  width: 100%;
-  font-size: 4em;
-  color: white;
-  display: flex;
-  justify-content: center;
-}
-
-#nextDownArrow {
-  width: auto;
-  -webkit-animation: action 1s ease infinite alternate;
-  animation: action 1s ease infinite alternate;
-}
-@-webkit-keyframes action {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(0.5em);
-  }
-}
-@keyframes action {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(0.5em);
-  }
-}
-
-#nextDownArrow svg {
-  cursor: pointer;
-  width: 1.3em;
-  height: auto;
-}
-
 #navBar {
   position: absolute;
   top: 0;
   width: 100%;
   height: 4em;
-  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  display: none;
 }
+
 #navBar ul {
   height: 100%;
   align-items: center;
   list-style-type: none;
   display: flex;
 }
+
+#navBar ul li {
+  transform: scale(1);
+}
+
 #navBar ul li span {
   margin: 1em;
   position: relative;
-  color: white;
+  color: var(--primary-color);
   font-size: 1.4em;
   text-decoration: none;
   cursor: pointer;
-  transition: 0.5s;
-  /* border-bottom: 1px solid white; */
+  transition: var(--transition);
 }
+
 #navBar ul li span::after {
   position: absolute;
   content: '';
@@ -89,29 +71,16 @@ body {
   transform: scaleX(0);
   transform-origin: right;
 }
-#navBar ul li span:hover,
-#navBar ul li span.hover {
-  /* transform: scale(); */
-  color: rgba(221, 221, 221, 0.959);
-}
+
 #navBar ul li span:hover::after,
 #navBar ul li span.hover::after {
   transform: scaleX(1);
   transform-origin: left;
-  background: rgba(218, 214, 214, 0.7);
-}
-#navBar ul li {
-  transform: scale(0.25);
-}
-/* #nextDownArrow,
-.container-typing, */
-#navBar,
-#navBar ul li {
-  display: none;
 }
 
 #menuButton {
-  display: none;
+  display: none !important;
+  color: var(--primary-color);
 }
 
 #menuButton svg {
@@ -119,11 +88,41 @@ body {
   height: auto;
   cursor: pointer;
   margin: 0em 1em 0em 0em;
-  /* transition: ease 0.5s; */
 }
 
 #menuButton svg:hover {
-  /* transform: rotate(90deg); */
+  transform: scale(1.05);
+}
+
+#nextDownArrowContainer {
+  position: absolute;
+  bottom: 0.2em;
+  text-align: center;
+  width: 100%;
+  font-size: 4em;
+  color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+}
+
+#nextDownArrow {
+  animation: bounce 1s ease infinite alternate;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0.5em);
+  }
+}
+
+#nextDownArrow svg {
+  cursor: pointer;
+  width: 1.3em;
+  height: auto;
 }
 
 #profileImage {
@@ -133,7 +132,6 @@ body {
   border-radius: 50%;
   overflow: hidden;
   filter: drop-shadow(rgba(255, 255, 255, 0.2) 0px 3px 3px);
-  -webkit-filter: drop-shadow(rgba(255, 255, 255, 0.2) 0px 3px 3px);
 }
 
 #profileImage img {
@@ -147,75 +145,28 @@ body {
 
 #profileImage img:hover,
 #profileImage img.hover {
-  transform: scale(1.6);
+  transform: scale(1.15);
   opacity: 1;
 }
 
 #profileDescription {
-  color: white;
+  color: var(--primary-color);
   margin: 1em;
   text-align: justify;
-  line-height: 1.5;
+  line-height: var(--line-height-base);
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 18em;
 }
 
 #location {
-  color: white;
+  color: var(--primary-color);
   cursor: default;
   text-align: center;
   margin-top: -0.9em;
 }
 
-.about {
-  height: calc(100% - 6em);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* margin-bottom: 1em; */
-  padding: 1em;
-  /* transform: translateY(100%); */
-  /* overflow-x: auto;
-  overflow-y: visible; */
-}
-
-#profileDescription {
-  overflow-x: auto;
-  overflow-y: hidden;
-  min-width: 18em;
-  /* min-height: 18em; */
-}
-.about #aboutBox {
-  width: 25em;
-  min-width: 18.5em;
-  /* min-height: 30em; */
-  max-height: 97%;
-  /* margin-top: 4em; */
-  /* justify-content: center; */
-  border: 2px solid rgba(255, 255, 255, 0.555);
-  border-radius: 10px;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  overflow-y: hidden;
-  overflow-x: auto;
-}
-
-.about #aboutBox #pictureBox {
-  /* width: 20em; */
-  display: flex;
-  justify-content: center;
-}
-
-.about #name {
-  text-align: center;
-  margin-top: 0.3em;
-  color: white;
-  font-size: 2em;
-}
-
-#currentPosition {
-  font-size: 1.75em;
-  cursor: default;
-}
-
+.about,
 .projects,
 .experience,
 .contact {
@@ -223,25 +174,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-bottom: 1em; */
   padding: 1em;
-  /* transform: translateY(200%); */
-  /* overflow-x: auto;
-  overflow-y: visible; */
 }
 
+.about {
+  transform: translateY(100%);
+}
+
+.projects {
+  transform: translateY(200%);
+}
+
+.experience {
+  transform: translateY(300%);
+}
+
+.contact {
+  transform: translateY(400%);
+}
+
+.about #aboutBox,
 .projects #projectsBox,
 .experience #experienceBox,
 .contact #contactBox {
   width: 25em;
   min-width: 18.5em;
-  /* min-height: 30em; */
   max-height: 97%;
-  /* margin-top: 4em; */
-  /* justify-content: center; */
-  border: 2px solid rgba(255, 255, 255, 0.555);
-  border-radius: 10px;
-  -webkit-backdrop-filter: blur(4px);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
   backdrop-filter: blur(4px);
   overflow-y: hidden;
   overflow-x: auto;
@@ -251,280 +211,240 @@ body {
 #experienceBoxHeading,
 #contactBoxHeading {
   padding: 0.8em;
-  color: white;
+  color: var(--primary-color);
   font-size: 1.7em;
   text-align: center;
 }
 
-#ImageLoading {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  top: 0;
-  left: 0;
+.about #name {
+  text-align: center;
+  margin-top: 0.3em;
+  color: var(--primary-color);
+  font-size: 2em;
 }
 
-#projectsList {
+.about #aboutBox #pictureBox {
+  display: flex;
+  justify-content: center;
+}
+
+.cv-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.cv-button-container span {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#downloadCVButton {
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+#downloadCVButton button {
+  background: var(--bg-blur);
+  color: var(--primary-color);
+  border: 0.0625em solid var(--border-light);
+  padding: 0.5em 1em;
+  border-radius: 0.75em;
+  font-size: 0.875em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  backdrop-filter: blur(0.625em);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375em;
+  font-family: var(--font-family);
+}
+
+#downloadCVButton button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-0.0625em);
+}
+
+#downloadCVButton button svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.heart-icon {
+  width: 1em;
+  height: auto;
+  margin: 0 0.3em -0.125em 0.3em;
+}
+
+#projectsList,
+#experienceList {
   text-align: center;
 }
 
-#project {
+#project,
+#experience {
   margin: 0.8em;
 }
 
 #projectName {
   font-size: 1.3em;
+  margin-bottom: 0.5em;
 }
 
-#projectDescription {
+#projectDescription,
+#experienceDescription {
   text-align: justify;
-  line-height: 1.5;
+  line-height: var(--line-height-base);
+}
+
+#experienceDescription {
+  margin-top: 0.5em;
+  padding: 1em;
 }
 
 #projectLinks {
   margin: 0.2em;
   font-size: 2em;
 }
+
+#projectLinks a {
+  margin: 0.3em 0.5em 0em 0.5em;
+  cursor: pointer;
+  display: inline-block;
+  transition: var(--transition);
+}
+
+#projectLinks a:hover {
+  transform: scale(1.3);
+}
+
+#projectLinks a svg {
+  width: 1em;
+  height: 1em;
+}
+
 #projectsNavigation {
   margin-top: -1em;
   height: 3.5em;
 }
-#previousProject {
+#experienceNavigation {
+  height: 3.5em;
+}
+
+#previousProject,
+#previousExperience {
   position: absolute;
   left: 1em;
   display: none;
 }
-#nextProject {
+
+#nextProject,
+#nextExperience {
   position: absolute;
   right: 1em;
 }
 
 #previousProject svg,
-#nextProject svg {
+#nextProject svg,
+#previousExperience svg,
+#nextExperience svg {
   margin: 0.3em 0em 1em 0em;
   width: 2em;
   height: auto;
   cursor: pointer;
 }
 
-#projectLinks a {
-  margin: 0.3em 0.5em 0em 0.5em;
-  cursor: pointer;
-}
-#projectLinks i {
-  transition: ease 0.3s;
-}
-#projectLinks i:hover {
-  font-size: 1.15em;
-}
-#projectsBox *,
-#experienceBox *,
-#contactBox {
-  color: white;
-}
-
-#experienceDescription {
-  padding: 1em;
-  text-align: justify;
-  line-height: 1.5;
-}
-
-#gsocIcon,
-#skillsHeading {
+#experienceCompany {
+  font-size: 1.3em;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* text-align: center; */
-  font-size: 1.4em;
-}
-#gsocIcon svg {
-  transition: ease 0.4s;
-}
-#gsocIcon svg:hover {
-  transform: scale(1.2);
 }
 
-#skills {
-  text-align: center;
+#experienceCompany img {
+  width: 3em;
+  height: 3em;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  margin-bottom: 0.3em;
 }
-#skills svg {
-  margin: 0.5em;
-  transition: ease 0.4s;
+
+#experienceCompany img[src*='junper'] {
+  width: 6em;
+  object-fit: contain;
 }
-#skills svg:hover {
-  transform: scale(1.4);
+
+#experienceCompany img[src*='gsoc'] {
+  width: 2em;
+  object-fit: contain;
 }
-#skills #dockerSVG:hover {
-  transform: scale(1.8);
+
+#experiencePosition {
+  font-size: 1.1em;
+  color: var(--secondary-color);
 }
-@media only screen and (max-width: 700px) {
-  #navBar ul {
-    display: block;
-  }
-  #navBar ul li {
-    padding: 1em;
-  }
-  #menuButton {
-    display: flex;
-    margin: 1em 1em 1em 2em;
-    color: white;
-  }
+
+#experienceDate {
+  color: var(--tertiary-color) !important;
 }
 
 #sendMessageBox {
   text-align: center;
   padding: 1em;
 }
+
+#sendMessageBox form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #sendMessageBox form input,
 #sendMessageBox form textarea {
   margin-bottom: 1em;
   background: transparent;
-  border: none;
-  padding: 0.4em;
-  color: white;
   border: 1px solid #ffffff59;
+  padding: 0.4em;
+  color: var(--primary-color);
   border-radius: 4px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-family);
   font-size: 0.9em;
-  transition: ease 0.3s;
+  transition: var(--transition);
+  width: 21.7em;
 }
+
 #sendMessageBox form input::placeholder,
 #sendMessageBox form textarea::placeholder {
   color: rgba(255, 255, 255, 0.692);
 }
+
 #sendMessageBox form input:focus,
 #sendMessageBox form textarea:focus {
-  border: 1px solid #ffffff;
-  border-radius: 4px;
+  border: 1px solid var(--primary-color);
   outline: none;
 }
-#nameOfSender,
-#emailOfSender {
-  width: 21.7em;
-}
-#sendMessageBox svg {
-  margin-bottom: -0.36em;
-  margin-right: 0.5em;
+
+.emailForm {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5em;
+  margin-bottom: 1em;
 }
 
-@media only screen and (max-width: 358px), (max-height: 630px) {
-  #profileDescription,
-  #experienceDescription,
-  #goToSkillsBox {
-    font-size: small;
-  }
-  #gsocIcon {
-    font-size: 1em;
-  }
-  #gsocIcon svg {
-    width: 30px;
-    height: auto;
-  }
-  #experienceBoxHeading {
-    font-size: larger;
-  }
-  #goToSkillsBox svg {
-    width: 15px;
-    height: auto;
-    margin-bottom: -0.2em !important;
-  }
+.emailForm input,
+.emailForm textarea {
+  flex: 1;
+  margin-bottom: 0 !important;
 }
 
-@media only screen and (max-height: 510px) {
-  #profileImage img {
-    width: 5em;
-    height: 5em;
-  }
-  #profileImage {
-    width: 5em;
-    height: 5em;
-  }
-  .about #name {
-    font-size: medium;
-  }
-  .about #location {
-    font-size: small;
-  }
-  #aboutBox,
-  #projectsBox {
-    max-width: 95%;
-    display: flex;
-  }
-  #pictureBox {
-    width: 30em;
-  }
-  #projectDescription,
-  #projectName {
-    font-size: 0.87em;
-  }
-  #projectsBoxHeading {
-    font-size: 1.3em;
-  }
-  #projectsNavigation svg {
-    width: 1.5em;
-  }
-  #projectLinks i {
-    font-size: 0.85em;
-  }
-  #skills {
-    padding: 0.3em 1em 0.3em 1em !important;
-  }
-  #skills svg {
-    width: 40px !important;
-  }
-}
-
-@media only screen and (max-height: 410px) {
-  #projectDescription {
-    font-size: 0.65em;
-    margin-top: -1em;
-  }
-  #projectName {
-    font-size: 0.8em;
-  }
-  #projectsBoxHeading {
-    font-size: 1.2em;
-  }
-  #projectsNavigation svg {
-    width: 1.3em;
-  }
-  #projectsNavigation {
-    height: 2.3em;
-  }
-  #projectLinks i {
-    font-size: 0.7em;
-  }
-  #projectLinks {
-    margin-top: -0.3em;
-  }
-  #experienceDescription,
-  #goToSkillsBox {
-    font-size: 0.62em;
-    line-height: 1.2;
-    padding: 0em 1em 0em 1em !important;
-  }
-  #experienceBoxHeading {
-    padding: 0.3em 0.8em 0.3em 0.8em !important;
-  }
-  #skillsHeading {
-    font-size: 1em !important;
-  }
-  #skills svg {
-    width: 30px !important;
-    height: 30px !important;
-    margin: 0.2em !important;
-  }
-}
-
-@-moz-document url-prefix() {
-  .container-theme-toggle {
-    top: 0;
-  }
-}
-
-textarea {
-  resize: none;
+.emailForm i {
+  margin-top: 0.5em;
+  flex-shrink: 0;
 }
 
 .social-links {
@@ -533,19 +453,13 @@ textarea {
   padding: 1em;
 }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .social-btn {
   cursor: default;
   height: 50px;
   width: 50px;
   font-family: 'Titillium Web', sans-serif;
-  border-radius: 10px;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  box-shadow: 0px 10px 10px var(--shadow);
   background: #ffffffbf;
   margin: 5px;
   transition: 1s;
@@ -557,16 +471,13 @@ textarea {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  color: #333;
+  color: #333 !important;
   text-decoration: none;
+  text-overflow: clip;
   opacity: 0;
   pointer-events: none;
 }
 
-.social-btn a:hover {
-  text-decoration: underline;
-}
 .social-btn:hover {
   width: 9.5em;
   border-radius: 5px;
@@ -581,40 +492,753 @@ textarea {
   pointer-events: auto;
 }
 
-#linkedin svg {
-  fill: #0e76a8;
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#github {
-  fill: #333;
+#projectsBox *,
+#experienceBox *,
+#contactBox * {
+  color: var(--primary-color);
 }
-#sendMailForm textarea {
-  width: 21.7em;
-  margin-left: -0.3em;
+
+#contactBox .sendButton,
+#contactBox .sendButton * {
+  color: #ffffff !important;
 }
-@media only screen and (max-width: 430px) {
+
+#location i {
+  margin: 0em 0.1em -0.1em 0em;
+  width: 1.1em;
+  height: auto;
+}
+
+#location a {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.company-link {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.company-link u {
+  border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);
+  text-decoration: none;
+}
+
+.section-hr {
+  margin-top: 0.6em;
+}
+
+.hidden {
+  display: none;
+}
+
+#experienceCompany span {
+  font-size: 1.3em;
+  vertical-align: middle;
+  display: none;
+}
+
+#experiencePosition {
+  margin-top: 0.3em;
+  font-style: italic;
+}
+
+#experienceDate {
+  margin-top: 0.2em;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+#experienceDescription a {
+  text-decoration: none;
+  color: white;
+  border-bottom: 0.2px dashed rgba(255, 255, 255, 0.39);
+}
+
+#contactBox {
+  overflow: hidden;
+}
+
+.send-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.send-button-centered {
+  margin: 0 auto;
+}
+
+#socialBox {
+  display: none;
+}
+
+#goToSocialBox {
+  height: 2.2em;
+}
+
+#goToSocial {
+  position: absolute;
+  right: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+#goToMessage {
+  position: absolute;
+  left: 1em;
+  display: none;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.3em;
+}
+
+#goToSocial i,
+#goToMessage i {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+#previousExperience {
+  display: none;
+}
+
+@media (max-height: 600px) {
+  .about #aboutBox {
+    overflow-y: auto;
+    max-height: 95vh;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  #content {
+    min-height: 100vh;
+    padding-bottom: 2em;
+  }
+
+  #profileDescription {
+    font-size: 0.8em;
+    line-height: var(--line-height-compact);
+  }
+
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.75em;
+    line-height: 1.2;
+  }
+
+  #experienceCompany img {
+    width: 2.5em;
+    height: 2.5em;
+  }
+
+  #experienceCompany img[src*='junper'] {
+    width: 5em;
+  }
+
+  #experienceCompany img[src*='gsoc'] {
+    width: 1.8em;
+  }
+
+  .cv-button-container {
+    margin-top: 0.3em;
+  }
+
+  .cv-button-container span {
+    font-size: 0.85em;
+  }
+
+  #downloadCVButton button {
+    font-size: 0.75em;
+    padding: 0.35em 0.7em;
+  }
+}
+
+@media (max-width: 700px) {
+  #navBar li {
+    display: none;
+  }
+
+  #navBar ul {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+    padding: 1em 0 1em 2em;
+  }
+
+  #navBar ul li {
+    margin: 0.8em 0;
+  }
+
+  #navBar ul li span {
+    margin: 0;
+  }
+  #menuButton {
+    display: flex !important;
+    margin: 1em 1em 1em 2em;
+    color: var(--primary-color);
+  }
+
+  /* Ensure nextDownArrow doesn't interfere with mobile layout */
+  #nextDownArrowContainer {
+    bottom: 0.5em;
+    font-size: 3em;
+    z-index: 1;
+  }
+
+  /* Make sure CV button is not covered on mobile */
+  .cv-button-container {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+@media (max-height: 768px) {
+  .about #aboutBox,
+  .projects #projectsBox,
+  .experience #experienceBox,
+  .contact #contactBox {
+    overflow-y: auto;
+    max-height: 90vh;
+    padding: 0.6em;
+  }
+
+  #profileDescription,
+  #projectDescription,
+  #experienceDescription {
+    font-size: 0.85em;
+    line-height: var(--line-height-compact);
+    margin: 0.6em;
+  }
+
+  #experienceDescription {
+    margin: 0.6em;
+  }
+
+  #projectsBoxHeading,
+  #experienceBoxHeading,
+  #contactBoxHeading {
+    font-size: 1.4em;
+    padding: 0.6em;
+  }
+
+  #projectsNavigation,
+  #experienceNavigation {
+    height: 3em;
+    margin-top: -0.8em;
+  }
+
+  #previousProject svg,
+  #nextProject svg,
+  #previousExperience svg,
+  #nextExperience svg {
+    width: 1.8em;
+    margin: 0.2em 0em 0.8em 0em;
+  }
+
+  #sendMessageBox {
+    padding: 0.6em;
+  }
+
+  #sendMessageBox form input,
+  #sendMessageBox form textarea {
+    font-size: 0.85em;
+    padding: 0.35em;
+    margin-bottom: 0.8em;
+  }
+
+  .cv-button-container {
+    gap: 0.4em;
+    margin: 0.4em 0 0.3em 0;
+  }
+
+  .cv-button-container span {
+    font-size: 0.85em;
+  }
+
+  #downloadCVButton button {
+    font-size: 0.8em;
+    padding: 0.4em 0.7em;
+  }
+
+  #profileImage {
+    margin-top: 0.6em;
+    height: 9em;
+    width: 9em;
+  }
+
+  #profileImage img {
+    width: 9em;
+    height: 9em;
+  }
+
+  .about #name {
+    font-size: 1.6em;
+    margin-bottom: 0.2em;
+  }
+
+  #location {
+    margin-top: -0.7em;
+    margin-bottom: 0.4em;
+    font-size: 0.95em;
+  }
+}
+
+@media (max-height: 680px) {
+  #profileDescription {
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 0.5em;
+  }
+
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.85em;
+    line-height: var(--line-height-compact);
+  }
+
+  .cv-button-container {
+    margin: 0.3em 0 0.2em 0;
+  }
+
+  .cv-button-container span {
+    font-size: 0.8em;
+  }
+
+  #downloadCVButton button {
+    font-size: 0.75em;
+    padding: 0.3em 0.6em;
+  }
+
+  .about #name {
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+  }
+
+  #location {
+    margin-top: -0.6em;
+    margin-bottom: 0.5em;
+  }
+}
+
+@media (max-height: 550px) {
+  #profileDescription {
+    font-size: 0.75em;
+    line-height: 1.2;
+  }
+
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.7em;
+    line-height: var(--line-height-tight);
+  }
+
+  #experienceNavigation,
+  #projectsNavigation {
+    height: 2.5em;
+    margin-top: -0.5em;
+  }
+
+  #experienceCompany {
+    font-size: 1.1em;
+  }
+
+  #experiencePosition {
+    font-size: 1em;
+  }
+
+  .cv-button-container {
+    margin: 0.2em 0 0.5em 0;
+  }
+
+  .cv-button-container span {
+    font-size: 0.8em;
+  }
+
+  #downloadCVButton button {
+    font-size: 0.7em;
+    padding: 0.3em 0.6em;
+  }
+
+  .heart-icon {
+    width: 0.8em;
+    margin: 0 0.2em -0.1em 0.2em;
+  }
+}
+
+@media (max-height: 500px) {
+  #profileDescription {
+    font-size: 0.7em;
+    line-height: var(--line-height-tight);
+  }
+
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.65em;
+    line-height: 1;
+  }
+
+  #experienceCompany img {
+    width: 2em;
+    height: 2em;
+  }
+
+  #experienceCompany img[src*='junper'] {
+    width: 4em;
+  }
+
+  #experienceCompany img[src*='gsoc'] {
+    width: 1.5em;
+  }
+
+  #experienceNavigation,
+  #projectsNavigation {
+    height: 2em;
+    margin-top: -1em;
+  }
+}
+
+@media (max-height: 450px) {
+  .about #aboutBox {
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+
+  #profileDescription {
+    font-size: 0.65em;
+    line-height: 1;
+    margin: 0.3em;
+  }
+
+  .cv-button-container {
+    margin: 0.1em 0;
+  }
+
+  .cv-button-container span {
+    font-size: 0.7em;
+  }
+
+  #downloadCVButton button {
+    font-size: 0.65em;
+    padding: 0.2em 0.4em;
+  }
+
+  #profileImage {
+    margin-top: 0.2em;
+    height: 6em;
+    width: 6em;
+  }
+
+  #profileImage img {
+    width: 6em;
+    height: 6em;
+  }
+
+  .about #name {
+    font-size: 1em;
+    margin-bottom: 0.1em;
+  }
+
+  #location {
+    margin-top: -0.4em;
+    margin-bottom: 0.2em;
+    font-size: 0.75em;
+  }
+}
+
+@media (max-height: 400px) {
+  .about #aboutBox {
+    padding: 0.2em;
+    overflow-y: auto;
+  }
+
+  #profileDescription {
+    font-size: 0.6em;
+    line-height: 0.9;
+    margin: 0.2em;
+  }
+
+  .cv-button-container {
+    margin: 0.1em 0;
+  }
+
+  .cv-button-container span {
+    font-size: 0.65em;
+  }
+
+  #downloadCVButton button {
+    font-size: 0.6em;
+    padding: 0.15em 0.3em;
+  }
+
+  #profileImage {
+    height: 5em;
+    width: 5em;
+    margin-top: 0.1em;
+  }
+
+  #profileImage img {
+    width: 5em;
+    height: 5em;
+  }
+
+  .about #name {
+    font-size: 0.9em;
+    margin-bottom: 0.05em;
+  }
+
+  #location {
+    margin-top: -0.3em;
+    margin-bottom: 0.1em;
+    font-size: 0.7em;
+  }
+
+  .heart-icon {
+    width: 0.6em;
+    margin: 0 0.1em -0.05em 0.1em;
+  }
+
+  #previousProject,
+  #nextProject,
+  #previousExperience,
+  #nextExperience {
+    position: fixed;
+    bottom: 1em;
+    z-index: 1000;
+  }
+
+  #previousProject,
+  #previousExperience {
+    left: 1em;
+  }
+
+  #nextProject,
+  #nextExperience {
+    right: 1em;
+  }
+
+  #previousProject svg,
+  #nextProject svg,
+  #previousExperience svg,
+  #nextExperience svg {
+    width: 1.5em;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 0.3em;
+    margin: 0;
+  }
+}
+
+@media (max-width: 424px) {
+  .emailForm {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5em;
+  }
+
+  .emailForm input,
+  .emailForm textarea {
+    width: calc(100% - 2em);
+    min-width: 0;
+  }
+}
+
+@media (max-width: 430px) {
   #sendMailForm input,
   #sendMailForm textarea {
     width: 19em;
   }
 }
-@media only screen and (max-width: 390px) {
+
+@media (max-width: 390px) {
   #sendMailForm input,
   #sendMailForm textarea {
     width: 17em;
   }
 }
-@media only screen and (max-width: 360px) {
+
+@media (max-width: 360px) {
   #sendMailForm input,
   #sendMailForm textarea {
     width: 13em;
   }
 }
 
-.sendButton:hover .default {
-  /* font-size: 1.2em; */
+@media (max-width: 358px) {
+  #profileDescription,
+  #experienceDescription,
+  #projectDescription {
+    font-size: small;
+  }
+
+  #experienceBoxHeading {
+    font-size: larger;
+  }
+}
+
+@media (max-width: 320px) {
+  #profileDescription,
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.65em;
+    line-height: 1;
+  }
+
+  #experienceCompany {
+    font-size: 0.9em;
+  }
+
+  #experiencePosition {
+    font-size: 0.8em;
+  }
+
+  #experienceCompany img {
+    width: 1.8em;
+    height: 1.8em;
+  }
+
+  #experienceCompany img[src*='junper'] {
+    width: 3.5em;
+  }
+
+  #experienceCompany img[src*='gsoc'] {
+    width: 1.3em;
+  }
+}
+
+@media (max-width: 280px), (max-height: 350px) {
+  #profileDescription,
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.6em;
+    line-height: 0.9;
+  }
+
+  #experienceCompany,
+  #projectName {
+    font-size: 0.8em;
+  }
+
+  #experiencePosition {
+    font-size: 0.7em;
+  }
+
+  #experienceDate {
+    font-size: 0.65em;
+  }
+
+  #experienceCompany img {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  #experienceCompany img[src*='junper'] {
+    width: 3em;
+  }
+
+  #experienceCompany img[src*='gsoc'] {
+    width: 1.2em;
+  }
+
+  #experienceNavigation,
+  #projectsNavigation {
+    height: 1.2em;
+    margin-top: -2em;
+  }
+
+  #experienceNavigation svg,
+  #projectsNavigation svg {
+    width: 0.8em;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  #profileDescription,
+  #experienceDescription,
+  #projectDescription {
+    font-size: 0.75em;
+    line-height: var(--line-height-tight);
+  }
+
+  #experienceNavigation,
+  #projectsNavigation {
+    height: 2em;
+    margin-top: -0.8em;
+  }
+
+  #experienceCompany img {
+    width: 2.2em;
+    height: 2.2em;
+  }
+
+  #experienceCompany img[src*='junper'] {
+    width: 4.5em;
+  }
+
+  #experienceCompany img[src*='gsoc'] {
+    width: 1.6em;
+  }
+}
+
+#ImageLoading {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+}
+
+#currentPosition {
+  font-size: 1.75em;
+  cursor: default;
+  text-transform: capitalize;
+}
+
+#gsocIcon,
+#gsocIcon svg {
+  transition: var(--transition);
+}
+
+#gsocIcon svg:hover {
   transform: scale(1.2);
 }
+
+#sendMailForm svg {
+  margin-bottom: -0.36em;
+  margin-right: 0.5em;
+}
+
+.sendButton:hover .default {
+  transform: scale(1.2);
+}
+
 .sendButton .default {
-  transition: ease 0.5s;
+  transition: var(--transition);
+}
+
+#linkedin svg {
+  fill: #0e76a8;
+}
+
+#github {
+  fill: #333;
 }

@@ -1,0 +1,18 @@
+https://akhilrana.com/libraries/feather/feather.min.js.map
+  content-type: application/json
+
+https://akhilrana.com/libraries/*
+  content-type: application/javascript
+
+https://akhilrana.com/utils/js/*
+  content-type: application/javascript
+
+https://akhilrana.com/utils/css/*
+  content-type: text/css
+
+https://akhilrana.com/script.js
+  content-type: application/javascript
+
+https://akhilrana.com/style.css
+  content-type: text/css
+

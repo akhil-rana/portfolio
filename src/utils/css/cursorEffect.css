@@ -1,0 +1,94 @@
+* {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: background 0.1s ease-out, box-shadow 0.1s ease-out, transform 0.1s ease-out;
+  box-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 40px rgba(255, 255, 255, 0.4),
+    0 0 60px rgba(255, 255, 255, 0.2);
+}
+
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: cursorTrailFade 1s ease-out forwards;
+}
+
+@keyframes cursorTrailFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+}
+
+.custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(1.5);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.9) 0%, rgba(255, 215, 0, 0.5) 40%, transparent 70%);
+  box-shadow: 
+    0 0 30px rgba(255, 215, 0, 0.8),
+    0 0 60px rgba(255, 215, 0, 0.6),
+    0 0 90px rgba(255, 215, 0, 0.4);
+}
+
+.star-repulsion-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 60%, rgba(255, 255, 255, 0.05) 70%, rgba(255, 255, 255, 0.1) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              background 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.star-repulsion-field.active {
+  opacity: 1;
+}
+
+.star-repulsion-field.hover {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.05);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 215, 0, 0.2) 40%, rgba(255, 215, 0, 0.1) 70%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+  * {
+    cursor: auto !important;
+  }
+  
+  .custom-cursor,
+  .cursor-trail,
+  .star-repulsion-field {
+    display: none !important;
+  }
+}
